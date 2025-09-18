@@ -1,25 +1,56 @@
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
+[RequireComponent(typeof(NetworkObject), typeof(Rigidbody), typeof(Collider))]
 public class PlasmaBall : NetworkBehaviour
 {
-    public float speed = 10f;
-    public float lifetime = 10f;
+    [SerializeField] private float speed = 22f;
+    [SerializeField] private float damage = 20f;
+    [SerializeField] private float lifetime = 3f;
 
-    private float timer = 0f;
+    private void Start()
+    {
+        if (IsServer)
+            Invoke(nameof(Despawn), lifetime);
+    }
 
-    void Update()
+    private void FixedUpdate()
+    {
+        if (IsServer)
+            transform.Translate(Vector3.forward * speed * Time.fixedDeltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if (!IsServer) return;
 
-        // Move forward on server
-        transform.position += transform.forward * speed * Time.deltaTime;
-
-        // Lifetime countdown
-        timer += Time.deltaTime;
-        if (timer >= lifetime)
+        // ✅ First, check for Ghosts
+        var ghost = other.GetComponentInParent<GhostAI>();
+        if (ghost != null)
         {
-            GetComponent<NetworkObject>().Despawn();
+            ghost.TakeDamageServerRpc(damage);
+            Despawn();
+            return;
         }
+
+        // (Optional) check for players
+        /*
+        var player = other.GetComponentInParent<PlayerHealth>();
+        if (player != null)
+        {
+            player.TakeDamageServerRpc(damage);
+            Despawn();
+            return;
+        }
+        */
+
+        // Anything else we hit -> despawn anyway
+        Despawn();
+    }
+
+    private void Despawn()
+    {
+        if (NetworkObject && NetworkObject.IsSpawned)
+            NetworkObject.Despawn(true);
     }
 }

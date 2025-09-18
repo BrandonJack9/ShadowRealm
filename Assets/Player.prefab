@@ -132,6 +132,8 @@ GameObject:
   - component: {fileID: 1877657652844998044}
   - component: {fileID: 5909334102314338112}
   - component: {fileID: 2526114873941088247}
+  - component: {fileID: 6460392948656812063}
+  - component: {fileID: 6792227770001755482}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -318,6 +320,33 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList: []
   m_Animator: {fileID: 5909334102314338112}
+--- !u!114 &6460392948656812063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6672871391792954294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5b44733da95f6f48a44f67e71b2fddc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &6792227770001755482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6672871391792954294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84152ab3278a93b448076324b9b2af4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  maxHealth: 100
 --- !u!1 &8695968746361394317
 GameObject:
   m_ObjectHideFlags: 0
