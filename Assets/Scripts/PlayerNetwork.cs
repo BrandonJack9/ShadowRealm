@@ -26,6 +26,11 @@ public class PlayerNetwork : NetworkBehaviour
     public CinemachineCamera playerCamera;
     public Transform cameraFollowTarget;
 
+    [Header("Camera Input (optional)")]
+    // Assign your Cinemachine input component here (e.g., CinemachineInputAxisController or CinemachineInputProvider).
+    // If you don't use one, leave it null.
+    public Behaviour cinemachineInputProvider;
+
     private CharacterController controller;
     private Animator animator;
 
@@ -66,7 +71,11 @@ public class PlayerNetwork : NetworkBehaviour
 
         if (IsOwner)
         {
-            LockCursor(true);
+            // Start locked only if we're in gameplay; otherwise unlock.
+            bool playing = GameManager.Instance != null &&
+                           GameManager.Instance.State.Value == GameManager.RoundState.Playing;
+            SetCursorLocked(playing);
+            SetCinemachineInputEnabled(playing);
         }
     }
 
@@ -74,8 +83,8 @@ public class PlayerNetwork : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        // Cursor lock toggles can happen anytime
-        HandleCursorLock();
+        // Enforce cursor & input mode based on GameManager state every frame
+        HandleCursorAndInputMode();
 
         // Gather inputs only if enabled; otherwise zeros
         ReadInputs();
@@ -94,21 +103,60 @@ public class PlayerNetwork : NetworkBehaviour
         UpdateAnimator(moveInput, runHeld);
     }
 
-
-    private void LateUpdate()
+    // -----------------------------------------
+    // Cursor & Input Mode
+    // -----------------------------------------
+    void HandleCursorAndInputMode()
     {
-        if (!IsOwner) return;
+        bool playing = GameManager.Instance != null &&
+                       GameManager.Instance.State.Value == GameManager.RoundState.Playing;
 
-        // Disable input unless game is Playing
-        if (GameManager.Instance != null)
+        if (playing)
         {
-            inputEnabled = (GameManager.Instance.State.Value == GameManager.RoundState.Playing);
+            // Gameplay: allow ESC to unlock (e.g., pause), and LMB to re-lock if currently unlocked
+            if (Input.GetKeyDown(KeyCode.Escape))
+                SetCursorLocked(false);
+
+            if (Cursor.lockState != CursorLockMode.Locked && Input.GetMouseButtonDown(0))
+                SetCursorLocked(true);
+        }
+        else
+        {
+            // Not playing (end-of-round/defeat/idle): force unlocked, never re-lock on click
+            if (Cursor.lockState != CursorLockMode.None)
+                SetCursorLocked(false);
+        }
+
+        // Input only when playing and cursor locked
+        inputEnabled = playing && (Cursor.lockState == CursorLockMode.Locked);
+
+        // Tie Cinemachine input provider to gameplay state (prevents camera rotation in menus)
+        SetCinemachineInputEnabled(playing && (Cursor.lockState == CursorLockMode.Locked));
+    }
+
+    void SetCursorLocked(bool locked)
+    {
+        if (locked)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
-    // -----------------------------------------
-    // Input & Cursor
-    // -----------------------------------------
 
+    void SetCinemachineInputEnabled(bool enabled)
+    {
+        if (cinemachineInputProvider != null)
+            cinemachineInputProvider.enabled = enabled;
+    }
+
+    // -----------------------------------------
+    // Input
+    // -----------------------------------------
     void ReadInputs()
     {
         if (inputEnabled)
@@ -127,35 +175,9 @@ public class PlayerNetwork : NetworkBehaviour
         }
     }
 
-    void HandleCursorLock()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            LockCursor(false);
-
-        if (Input.GetMouseButtonDown(0) && Cursor.lockState != CursorLockMode.Locked)
-            LockCursor(true);
-    }
-
-    void LockCursor(bool locked)
-    {
-        if (locked)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            inputEnabled = true;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            inputEnabled = false;
-        }
-    }
-
     // -----------------------------------------
     // Movement & Physics
     // -----------------------------------------
-
     void HandleMovement(Vector2 input, bool run)
     {
         bool isMoving = input.sqrMagnitude >= 0.01f;
@@ -206,17 +228,13 @@ public class PlayerNetwork : NetworkBehaviour
     // -----------------------------------------
     // Animator
     // -----------------------------------------
-
     void UpdateAnimator(Vector2 input, bool run)
     {
         bool moving = input.sqrMagnitude >= 0.01f;
         bool walking = isGrounded && moving && !run;
         bool running = isGrounded && moving && run;
 
-        // Stable jump state: true whenever airborne
         animator.SetBool("isJumping", !isGrounded);
-
-        // Ground locomotion states only when grounded
         animator.SetBool("isWalking", walking);
         animator.SetBool("isRunning", running);
     }
@@ -224,7 +242,6 @@ public class PlayerNetwork : NetworkBehaviour
     // -----------------------------------------
     // Throw
     // -----------------------------------------
-
     [ServerRpc]
     void ThrowPlasmaServerRpc(ServerRpcParams rpcParams = default)
     {

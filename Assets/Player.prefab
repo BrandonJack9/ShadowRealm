@@ -212,6 +212,7 @@ MonoBehaviour:
   throwPoint: {fileID: 7554008659481591021}
   playerCamera: {fileID: 3724600904512535374}
   cameraFollowTarget: {fileID: 4226947306897948908}
+  cinemachineInputProvider: {fileID: 3724600904512535374}
 --- !u!143 &4165506084259333251
 CharacterController:
   m_ObjectHideFlags: 0

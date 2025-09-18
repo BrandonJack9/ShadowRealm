@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
         if (defeatPanel != null)
         {
             defeatPanel.SetActive(true);
-            UnlockCursorForUI();
+            // Cursor unlocking is handled by PlayerNetwork based on game state now.
         }
     }
 
@@ -64,7 +64,7 @@ public class UIManager : MonoBehaviour
         if (endOfRoundPanel != null)
         {
             endOfRoundPanel.SetActive(true);
-            UnlockCursorForUI();
+            // Cursor unlocking is handled by PlayerNetwork based on game state now.
         }
     }
 
@@ -72,12 +72,6 @@ public class UIManager : MonoBehaviour
     {
         if (defeatPanel != null) defeatPanel.SetActive(false);
         if (endOfRoundPanel != null) endOfRoundPanel.SetActive(false);
-    }
-
-    private void UnlockCursorForUI()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     // ---------------- Button Handlers ----------------
