@@ -1,10 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
-/// Handles HUD and panels. Called from GameManager via ClientRpc.
-/// Place this on your Canvas in the scene.
-/// </summary>
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
@@ -13,10 +10,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text plasmaText;
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text roundText;
+    [SerializeField] private TMP_Text joinCodeHUD; // optional
 
     [Header("Panels")]
     [SerializeField] private GameObject defeatPanel;
     [SerializeField] private GameObject endOfRoundPanel;
+
+    [Header("Buttons")]
+    public Button NextRoundButton;
+    public Button ReturnToLobbyButton;
 
     private void Awake()
     {
@@ -28,6 +30,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
     }
 
+    // ---------------- HUD ----------------
     public void RefreshHUD(int plasma, int threshold, int round, float timeRemaining)
     {
         if (plasmaText != null)
@@ -40,16 +43,29 @@ public class UIManager : MonoBehaviour
             roundText.text = $"Round {round}";
     }
 
+    public void UpdateJoinCode(string code)
+    {
+        if (joinCodeHUD != null)
+            joinCodeHUD.text = $"Code: {code}";
+    }
+
+    // ---------------- Panels ----------------
     public void ShowDefeatPanel()
     {
         if (defeatPanel != null)
+        {
             defeatPanel.SetActive(true);
+            UnlockCursorForUI();
+        }
     }
 
     public void ShowEndOfRoundPanel()
     {
         if (endOfRoundPanel != null)
+        {
             endOfRoundPanel.SetActive(true);
+            UnlockCursorForUI();
+        }
     }
 
     public void HideAllPanels()
@@ -58,19 +74,24 @@ public class UIManager : MonoBehaviour
         if (endOfRoundPanel != null) endOfRoundPanel.SetActive(false);
     }
 
+    private void UnlockCursorForUI()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    // ---------------- Button Handlers ----------------
     public void OnClick_NextRound()
     {
-        Debug.Log("[UIManager] Next Round button clicked");
+        Debug.Log("[UIManager] Next Round button clicked (local)");
         if (GameManager.Instance != null)
             GameManager.Instance.HostStartNextRoundServerRpc();
     }
 
-
     public void OnClick_ReturnToLobby()
     {
+        Debug.Log("[UIManager] Return to Lobby button clicked (local)");
         if (GameManager.Instance != null)
-        {
             GameManager.Instance.HostReturnToLobbyServerRpc();
-        }
     }
 }
