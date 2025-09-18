@@ -21,8 +21,8 @@ public class GameManager : NetworkBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject lobbyCanvas;
     [SerializeField] private GameObject hudCanvas;
-    [SerializeField] private TMPro.TMP_Text joinCodeText;
-    [SerializeField] private TMPro.TMP_Text hudJoinCodeText;
+    [SerializeField] private TMPro.TMP_Text joinCodeText;    // Lives on Lobby
+    [SerializeField] private TMPro.TMP_Text hudJoinCodeText; // Lives on HUD
 
     [Header("Round Scaling")]
     [SerializeField] private int baseGhosts = 6;
@@ -43,7 +43,7 @@ public class GameManager : NetworkBehaviour
     private HashSet<ulong> knockedOutClients = new();
     private Coroutine timerRoutine;
 
-    private void Awake()
+    void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
@@ -51,10 +51,30 @@ public class GameManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        // SERVER: initialize round and start
         if (IsServer)
         {
             ApplyRoundScaling();
             StartRoundServer();
+        }
+
+        // CLIENT (and host runs this too): keep local UI/HUD in sync with NVs
+        if (IsClient)
+        {
+            // Immediately apply UI for current state (handles late joiners)
+            ApplyLocalUIFromState(State.Value);
+
+            // Wire up reactive HUD updates (keeps text fresh even if an RPC is missed)
+            PlasmaThisRound.OnValueChanged += (_, __) => SafeRefreshHUD();
+            PlasmaThreshold.OnValueChanged += (_, __) => SafeRefreshHUD();
+            Round.OnValueChanged += (_, __) => SafeRefreshHUD();
+            TimeRemaining.OnValueChanged += (_, __) => SafeRefreshHUD();
+
+            // React to state transitions locally (extra safety net)
+            State.OnValueChanged += (_, newState) => ApplyLocalUIFromState(newState);
+
+            // Initial HUD paint
+            SafeRefreshHUD();
         }
     }
 
@@ -64,6 +84,8 @@ public class GameManager : NetworkBehaviour
         TimeRemaining.Value = baseTimeSeconds + timePerRound * (Round.Value - 1);
     }
 
+    // -------------------- ROUND LIFECYCLE (SERVER) --------------------
+
     private void StartRoundServer()
     {
         CleanupRoundServer();
@@ -71,14 +93,9 @@ public class GameManager : NetworkBehaviour
         PlasmaThisRound.Value = 0;
         State.Value = RoundState.Playing;
 
-        if (lobbyCanvas != null)
-            lobbyCanvas.SetActive(false);
-
-        if (hudCanvas != null)
-            hudCanvas.SetActive(true);
-
-        if (joinCodeText != null && hudJoinCodeText != null)
-            hudJoinCodeText.text = joinCodeText.text;
+        // UI flip must be done on each client, not just locally
+        var code = joinCodeText != null ? joinCodeText.text : string.Empty;
+        EnterGameplayUIClientRpc(code);
 
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
@@ -91,7 +108,6 @@ public class GameManager : NetworkBehaviour
 
         HideAllPanelsClientRpc();
         RefreshHUDClientRpc();
-        // Cursor lock is now handled by PlayerNetwork based on state.
     }
 
     private void EndRoundServer(bool victory)
@@ -104,8 +120,7 @@ public class GameManager : NetworkBehaviour
         DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
-        if (victory)
-            ShowEndOfRoundPanelClientRpc();
+        if (victory) ShowEndOfRoundPanelClientRpc();
     }
 
     private void DefeatServer()
@@ -159,7 +174,7 @@ public class GameManager : NetworkBehaviour
             var go = Instantiate(prefab, spawn.position, spawn.rotation);
             var ghostAI = go.GetComponent<GhostAI>();
 
-            if (patrolRoutes.Count > 0)
+            if (patrolRoutes.Count > 0 && ghostAI != null)
             {
                 PatrolRoute route = patrolRoutes[Random.Range(0, patrolRoutes.Count)];
                 ghostAI.SetPatrolPath(route.Points);
@@ -183,6 +198,8 @@ public class GameManager : NetworkBehaviour
         }
         spawnedGhosts.Clear();
     }
+
+    // -------------------- SCORE / EVENTS (SERVER) --------------------
 
     [ServerRpc(RequireOwnership = false)]
     public void AddPlasmaServerRpc(int points)
@@ -273,21 +290,70 @@ public class GameManager : NetworkBehaviour
         DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
-        if (lobbyCanvas != null)
-            lobbyCanvas.SetActive(true);
-
-        if (hudCanvas != null)
-            hudCanvas.SetActive(false);
+        // Flip UI on all clients
+        ReturnToLobbyUIClientRpc();
 
         HideAllPanelsClientRpc();
         RefreshHUDClientRpc();
     }
 
+    // -------------------- CLIENT RPCs (UI) --------------------
+
+    [ClientRpc]
+    private void EnterGameplayUIClientRpc(string joinCode)
+    {
+        if (lobbyCanvas != null) lobbyCanvas.SetActive(false);
+        if (hudCanvas != null) hudCanvas.SetActive(true);
+
+        if (hudJoinCodeText != null)
+            hudJoinCodeText.text = joinCode ?? string.Empty;
+
+        // Clear popups and paint HUD immediately
+        UIManager.Instance?.HideAllPanels();
+        SafeRefreshHUD();
+    }
+
+    [ClientRpc]
+    private void ReturnToLobbyUIClientRpc()
+    {
+        if (lobbyCanvas != null) lobbyCanvas.SetActive(true);
+        if (hudCanvas != null) hudCanvas.SetActive(false);
+
+        UIManager.Instance?.HideAllPanels();
+    }
+
     [ClientRpc] private void ShowDefeatPanelClientRpc() => UIManager.Instance?.ShowDefeatPanel();
     [ClientRpc] private void ShowEndOfRoundPanelClientRpc() => UIManager.Instance?.ShowEndOfRoundPanel();
     [ClientRpc] private void HideAllPanelsClientRpc() => UIManager.Instance?.HideAllPanels();
+
     [ClientRpc]
     private void RefreshHUDClientRpc()
+    {
+        SafeRefreshHUD();
+    }
+
+    // -------------------- LOCAL UI HELPERS (CLIENT) --------------------
+
+    private void ApplyLocalUIFromState(RoundState state)
+    {
+        // This runs on each client; keeps canvases correct even if they missed an RPC.
+        switch (state)
+        {
+            case RoundState.Playing:
+            case RoundState.RoundEnded:
+                if (lobbyCanvas != null) lobbyCanvas.SetActive(false);
+                if (hudCanvas != null) hudCanvas.SetActive(true);
+                break;
+            case RoundState.Idle:
+            case RoundState.Defeat:
+            default:
+                if (lobbyCanvas != null) lobbyCanvas.SetActive(true);
+                if (hudCanvas != null) hudCanvas.SetActive(false);
+                break;
+        }
+    }
+
+    private void SafeRefreshHUD()
     {
         UIManager.Instance?.RefreshHUD(
             PlasmaThisRound.Value,

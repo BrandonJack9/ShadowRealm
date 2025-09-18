@@ -213,6 +213,8 @@ MonoBehaviour:
   playerCamera: {fileID: 3724600904512535374}
   cameraFollowTarget: {fileID: 4226947306897948908}
   cinemachineInputProvider: {fileID: 3724600904512535374}
+  reviveRange: 3
+  reviveKey: 101
 --- !u!143 &4165506084259333251
 CharacterController:
   m_ObjectHideFlags: 0
@@ -348,6 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   maxHealth: 100
+  CurrentHealth: 0
 --- !u!1 &8695968746361394317
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,7 +380,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8695968746361394317}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.22975285, y: -0.00000018216083, z: 0.000000043002327, w: 0.973249}
+  m_LocalRotation: {x: 0.22975293, y: -0, z: -0, w: 0.973249}
   m_LocalPosition: {x: 0, y: 3.1079998, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -575,7 +578,7 @@ MonoBehaviour:
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
-      InputValue: 0
+      InputValue: -0
       Driver:
         AccelTime: 0.2
         DecelTime: 0.2
@@ -588,7 +591,7 @@ MonoBehaviour:
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
-      InputValue: 0
+      InputValue: -0
       Driver:
         AccelTime: 0
         DecelTime: 0
