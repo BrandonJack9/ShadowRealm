@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="74bdd01c-f985-4a31-8cfb-05d3a768af79" name="Changes" comment="" />
+    <list default="true" id="35c34754-f163-45f0-9d13-ac2175b76a34" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,7 +13,7 @@
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 0
 }]]></component>
-  <component name="ProjectId" id="32t1cw9OhVDntxhRRbfAIAgmMLS" />
+  <component name="ProjectId" id="32t1d1yAWjODU9Gcw9Z1llo64KD" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -89,12 +89,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="74bdd01c-f985-4a31-8cfb-05d3a768af79" name="Changes" comment="" />
-      <created>1758225138490</created>
+      <changelist id="35c34754-f163-45f0-9d13-ac2175b76a34" name="Changes" comment="" />
+      <created>1758225138654</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1758225138490</updated>
-      <workItem from="1758225140393" duration="594000" />
+      <updated>1758225138654</updated>
+      <workItem from="1758225141091" duration="997000" />
     </task>
     <servers />
   </component>
