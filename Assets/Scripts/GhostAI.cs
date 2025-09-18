@@ -96,7 +96,7 @@ public class GhostAI : NetworkBehaviour
         BeginPatrolOrWander();
     }
 
-    private void Update()
+    private void CaseHandling()
     {
         // --- SERVER drives AI ---
         if (IsServer)
@@ -139,6 +139,11 @@ public class GhostAI : NetworkBehaviour
             animator.SetBool("Moving", moving && (currentState == State.Chasing || currentState == State.Patrolling));
             animator.SetBool("Unconscious", currentState == State.Unconscious || currentState == State.Carried);
         }
+    }
+
+    private void Update()
+    {
+        CaseHandling();
     }
 
     // ---------------- Patrol / Wander ----------------
