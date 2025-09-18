@@ -1,0 +1,2 @@
+This is a placeholder for DemoScene.unity.
+Recreate scene using provided hierarchy instructions.
