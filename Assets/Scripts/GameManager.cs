@@ -91,10 +91,7 @@ public class GameManager : NetworkBehaviour
 
         HideAllPanelsClientRpc();
         RefreshHUDClientRpc();
-
-        // ✅ Re-lock cursor for gameplay
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        // Cursor lock is now handled by PlayerNetwork based on state.
     }
 
     private void EndRoundServer(bool victory)
