@@ -2,60 +2,120 @@ using Unity.Netcode;
 using UnityEngine;
 
 /// <summary>
-/// Attach this to player prefab. Handles taking damage, KO, revive.
+/// Attach to player prefab. Handles taking damage, KO, and revive.
 /// </summary>
 [RequireComponent(typeof(NetworkObject))]
 [RequireComponent(typeof(KnockoutReporter))]
 public class PlayerHealth : NetworkBehaviour
 {
+    [Header("Health")]
     [SerializeField] private float maxHealth = 100f;
 
-    private float currentHealth;
+    // Server-authoritative health; everyone reads, only server writes.
+    private NetworkVariable<float> health = new NetworkVariable<float>(
+        100f,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Server
+    );
+
     private KnockoutReporter knockout;
 
-    public bool IsKO => currentHealth <= 0;
+    /// <summary>
+    /// Shown in the Inspector so you can watch it live.
+    /// Mirrors the networked value 'health.Value'. Do not edit at runtime.
+    /// </summary>
+    [Tooltip("Mirror of server health for inspector/debug. Do not change at runtime.")]
+    public float CurrentHealth;
+
+    public bool IsKO => health.Value <= 0f;
 
     private void Awake()
     {
-        currentHealth = maxHealth;
         knockout = GetComponent<KnockoutReporter>();
     }
+
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer)
+        {
+            health.Value = Mathf.Clamp(health.Value <= 0 ? maxHealth : health.Value, 0f, maxHealth);
+        }
+
+        // Keep mirror field and KO state in sync for all peers.
+        UpdateMirrorAndKOState(health.Value);
+        health.OnValueChanged += (_, newVal) =>
+        {
+            UpdateMirrorAndKOState(newVal);
+        };
+    }
+
+    private void OnDestroy()
+    {
+        health.OnValueChanged -= (_, __) => { }; // safe detach
+    }
+
+    private void UpdateMirrorAndKOState(float newVal)
+    {
+        CurrentHealth = newVal;
+
+        if (newVal <= 0f)
+        {
+            knockout?.SetKO(true);
+            OnKOClientRpc();
+        }
+        else
+        {
+            knockout?.SetKO(false);
+        }
+    }
+
+    // ---------------- DAMAGE ----------------
 
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(float dmg)
     {
         if (IsKO) return;
+        health.Value = Mathf.Max(0f, health.Value - Mathf.Max(0f, dmg));
 
-        currentHealth = Mathf.Max(0, currentHealth - dmg);
-
-        if (currentHealth <= 0)
+        if (health.Value <= 0f)
         {
-            knockout.SetKO(true);
-            OnKOClientRpc();
+            GameManager.Instance?.NotifyPlayerKOdServerRpc(OwnerClientId);
+            // UpdateMirrorAndKOState is invoked by OnValueChanged for everyone.
         }
     }
 
     [ClientRpc]
     private void OnKOClientRpc()
     {
-        // TODO: play KO animation, disable controls, etc.
-        Debug.Log($"{name} was knocked out!");
+        // Owner loses input when KO.
+        if (IsOwner)
+        {
+            var net = GetComponent<PlayerNetwork>();
+            if (net != null)
+                net.SetInputEnabled(false);
+        }
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void ReviveServerRpc()
+    // ---------------- REVIVE ----------------
+    // Server-side immediate revive (used by PlayerNetwork's server RPC after validation).
+    public void ServerReviveImmediate()
     {
+        if (!IsServer) return;
         if (!IsKO) return;
 
-        currentHealth = maxHealth;
-        knockout.SetKO(false);
+        health.Value = Mathf.Clamp(maxHealth * 0.5f, 1f, maxHealth); // bring back at 50%
+        GameManager.Instance?.NotifyPlayerRevivedServerRpc(OwnerClientId);
         OnReviveClientRpc();
     }
 
     [ClientRpc]
     private void OnReviveClientRpc()
     {
-        // TODO: play revive animation
-        Debug.Log($"{name} revived!");
+        if (IsOwner)
+        {
+            var net = GetComponent<PlayerNetwork>();
+            if (net != null)
+                net.SetInputEnabled(true);
+        }
     }
 }
