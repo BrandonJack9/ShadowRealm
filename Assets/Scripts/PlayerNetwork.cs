@@ -94,6 +94,17 @@ public class PlayerNetwork : NetworkBehaviour
         UpdateAnimator(moveInput, runHeld);
     }
 
+
+    private void LateUpdate()
+    {
+        if (!IsOwner) return;
+
+        // Disable input unless game is Playing
+        if (GameManager.Instance != null)
+        {
+            inputEnabled = (GameManager.Instance.State.Value == GameManager.RoundState.Playing);
+        }
+    }
     // -----------------------------------------
     // Input & Cursor
     // -----------------------------------------

@@ -1,14 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-/// <summary>
-/// Authoritative round-based Game Manager for multiplayer.
-/// Handles ghost spawning, scoring, round progression, defeat checks, and UI events.
-/// Attach to a scene object with a NetworkObject.
-/// </summary>
 [RequireComponent(typeof(NetworkObject))]
 public class GameManager : NetworkBehaviour
 {
@@ -16,10 +10,13 @@ public class GameManager : NetworkBehaviour
 
     public enum RoundState { Idle, Playing, RoundEnded, Defeat }
 
+    [Header("UI References")]
+    [SerializeField] private GameObject lobbyCanvas;  // assign in inspector
+
     [Header("Prefabs & Scene References")]
-    [SerializeField] private List<GameObject> ghostPrefabs = new();      // ghost prefabs (with GhostAI + NetworkObject)
-    [SerializeField] private List<Transform> ghostSpawnPoints = new();   // spawn locations
-    [SerializeField] private List<PatrolRoute> patrolRoutes = new();     // scene-only patrol routes
+    [SerializeField] private List<GameObject> ghostPrefabs = new();
+    [SerializeField] private List<Transform> ghostSpawnPoints = new();
+    [SerializeField] private List<PatrolRoute> patrolRoutes = new();
     [SerializeField] private GameObject nextRoundConsolePrefab;
     [SerializeField] private Transform nextRoundConsoleSpawn;
 
@@ -31,14 +28,14 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private int basePlasmaThreshold = 10;
     [SerializeField] private int plasmaPerRound = 10;
 
-    // ------------------- Network State -------------------
-    public NetworkVariable<int> Round = new(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<int> PlasmaThisRound = new(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<int> PlasmaThreshold = new(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<float> TimeRemaining = new(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<RoundState> State = new(RoundState.Idle, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    // ---------------- Networked state ----------------
+    public NetworkVariable<int> Round = new(1);
+    public NetworkVariable<int> PlasmaThisRound = new(0);
+    public NetworkVariable<int> PlasmaThreshold = new(0);
+    public NetworkVariable<float> TimeRemaining = new(0);
+    public NetworkVariable<RoundState> State = new(RoundState.Idle);
 
-    // ------------------- Runtime -------------------
+    // ---------------- Runtime ----------------
     private readonly List<NetworkObject> spawnedGhosts = new();
     private NetworkObject nextRoundConsole;
     private HashSet<ulong> knockedOutClients = new();
@@ -59,8 +56,7 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    // ------------------- Round Flow -------------------
-
+    // ---------------- Round Flow ----------------
     private void ApplyRoundScaling()
     {
         PlasmaThreshold.Value = basePlasmaThreshold + plasmaPerRound * (Round.Value - 1);
@@ -74,6 +70,10 @@ public class GameManager : NetworkBehaviour
         PlasmaThisRound.Value = 0;
         State.Value = RoundState.Playing;
 
+        // ✅ Disable the lobby canvas so its input fields/buttons can't steal focus
+        if (lobbyCanvas != null)
+            lobbyCanvas.SetActive(false);
+
         int ghostCount = baseGhosts + ghostsPerRound * (Round.Value - 1);
         SpawnGhostsServer(ghostCount);
 
@@ -81,6 +81,7 @@ public class GameManager : NetworkBehaviour
         timerRoutine = StartCoroutine(RoundTimerRoutine());
 
         HideAllPanelsClientRpc();
+        RefreshHUDClientRpc();
     }
 
     private void EndRoundServer(bool victory)
@@ -123,6 +124,7 @@ public class GameManager : NetworkBehaviour
         {
             yield return new WaitForSeconds(1f);
             TimeRemaining.Value--;
+            RefreshHUDClientRpc();
 
             if (AllPlayersKOdServer())
             {
@@ -135,8 +137,7 @@ public class GameManager : NetworkBehaviour
             EndRoundServer(victory: true);
     }
 
-    // ------------------- Ghost Spawning -------------------
-
+    // ---------------- Ghost Spawning ----------------
     private void SpawnGhostsServer(int count)
     {
         if (ghostPrefabs.Count == 0 || ghostSpawnPoints.Count == 0) return;
@@ -149,7 +150,6 @@ public class GameManager : NetworkBehaviour
             var go = Instantiate(prefab, spawn.position, spawn.rotation);
             var ghostAI = go.GetComponent<GhostAI>();
 
-            // assign patrol route if any exist
             if (patrolRoutes.Count > 0)
             {
                 PatrolRoute route = patrolRoutes[Random.Range(0, patrolRoutes.Count)];
@@ -175,14 +175,14 @@ public class GameManager : NetworkBehaviour
         spawnedGhosts.Clear();
     }
 
-    // ------------------- Plasma & Next Round -------------------
-
+    // ---------------- Plasma & Next Round ----------------
     [ServerRpc(RequireOwnership = false)]
     public void AddPlasmaServerRpc(int points)
     {
         if (State.Value != RoundState.Playing && State.Value != RoundState.RoundEnded) return;
 
         PlasmaThisRound.Value += Mathf.Max(0, points);
+        RefreshHUDClientRpc();
 
         if (PlasmaThisRound.Value >= PlasmaThreshold.Value)
             TrySpawnNextRoundConsole();
@@ -208,8 +208,7 @@ public class GameManager : NetworkBehaviour
         nextRoundConsole = null;
     }
 
-    // ------------------- Player KO / Defeat -------------------
-
+    // ---------------- Player KO / Defeat ----------------
     [ServerRpc(RequireOwnership = false)]
     public void NotifyPlayerKOdServerRpc(ulong clientId)
     {
@@ -235,8 +234,7 @@ public class GameManager : NetworkBehaviour
         return true;
     }
 
-    // ------------------- Round Transitions -------------------
-
+    // ---------------- Round Transitions ----------------
     [ServerRpc(RequireOwnership = false)]
     public void RequestEndRoundServerRpc()
     {
@@ -260,6 +258,9 @@ public class GameManager : NetworkBehaviour
     {
         if (!IsServer) return;
 
+        if (lobbyCanvas != null)
+            lobbyCanvas.SetActive(true);
+
         Round.Value = 1;
         ApplyRoundScaling();
         PlasmaThisRound.Value = 0;
@@ -269,10 +270,39 @@ public class GameManager : NetworkBehaviour
         DespawnNextRoundConsoleIfAny();
 
         HideAllPanelsClientRpc();
+        RefreshHUDClientRpc();
     }
 
-    // ------------------- UI RPC Stubs -------------------
-    [ClientRpc] private void ShowDefeatPanelClientRpc() { /* UIManager.Instance?.ShowDefeatPanel(...) */ }
-    [ClientRpc] private void ShowEndOfRoundPanelClientRpc() { /* UIManager.Instance?.ShowEndOfRoundPanel(...) */ }
-    [ClientRpc] private void HideAllPanelsClientRpc() { /* UIManager.Instance?.HideAllPanels(); */ }
+    // ---------------- UI RPCs ----------------
+    [ClientRpc]
+    private void ShowDefeatPanelClientRpc()
+    {
+        Debug.Log("[UI] Show Defeat Panel");
+        UIManager.Instance?.ShowDefeatPanel();
+    }
+
+    [ClientRpc]
+    private void ShowEndOfRoundPanelClientRpc()
+    {
+        Debug.Log("[UI] Show End Of Round Panel");
+        UIManager.Instance?.ShowEndOfRoundPanel();
+    }
+
+    [ClientRpc]
+    private void HideAllPanelsClientRpc()
+    {
+        UIManager.Instance?.HideAllPanels();
+    }
+
+    [ClientRpc]
+    private void RefreshHUDClientRpc()
+    {
+        Debug.Log($"[UI] RefreshHUD → Plasma {PlasmaThisRound.Value}/{PlasmaThreshold.Value}, Round {Round.Value}, Time {TimeRemaining.Value}");
+        UIManager.Instance?.RefreshHUD(
+            PlasmaThisRound.Value,
+            PlasmaThreshold.Value,
+            Round.Value,
+            TimeRemaining.Value
+        );
+    }
 }
