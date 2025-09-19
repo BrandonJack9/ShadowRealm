@@ -1,4 +1,4 @@
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 /// <summary>
@@ -49,9 +49,10 @@ public class PlayerHealth : NetworkBehaviour
         };
     }
 
-    private void OnDestroy()
+    // ✅ FIX: silence CS0114 (we're not overriding Netcode's internal OnDestroy)
+    private new void OnDestroy()
     {
-        health.OnValueChanged -= (_, __) => { }; // safe detach
+        health.OnValueChanged -= (_, __) => { }; // (matches your prior intent)
     }
 
     private void UpdateMirrorAndKOState(float newVal)
@@ -104,6 +105,18 @@ public class PlayerHealth : NetworkBehaviour
         if (!IsKO) return;
 
         health.Value = Mathf.Clamp(maxHealth * 0.5f, 1f, maxHealth); // bring back at 50%
+        GameManager.Instance?.NotifyPlayerRevivedServerRpc(OwnerClientId);
+        OnReviveClientRpc();
+    }
+
+    // ✅ NEW: used by restart to fully heal players
+    public void ServerFullHeal()
+    {
+        if (!IsServer) return;
+
+        health.Value = maxHealth;
+        knockout?.SetKO(false);
+
         GameManager.Instance?.NotifyPlayerRevivedServerRpc(OwnerClientId);
         OnReviveClientRpc();
     }
