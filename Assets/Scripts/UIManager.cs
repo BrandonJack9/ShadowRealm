@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     [Header("Buttons")]
     public Button NextRoundButton;
     public Button ReturnToLobbyButton;
+    public Button RestartButton; // present
 
     [Header("Revive UI")]
     [SerializeField] private GameObject revivePrompt;
@@ -120,5 +121,12 @@ public class UIManager : MonoBehaviour
         Debug.Log("[UIManager] Return to Lobby button clicked (local)");
         if (GameManager.Instance != null)
             GameManager.Instance.HostReturnToLobbyServerRpc();
+    }
+
+    public void OnClick_RestartGame()
+    {
+        Debug.Log("[UIManager] Restart button clicked (local)");
+        if (GameManager.Instance != null)
+            GameManager.Instance.HostRestartGameServerRpc();
     }
 }
