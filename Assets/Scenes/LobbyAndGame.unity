@@ -2485,11 +2485,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   ghostManager: {fileID: 1652922879}
-  ghostPrefabs:
-  - {fileID: 6757987743279635966, guid: 9efd9f1ea70336b42a83a226a0ba2efb, type: 3}
-  ghostSpawnPoints:
-  - {fileID: 1723515929}
-  patrolRoutes: []
   nextRoundConsolePrefab: {fileID: 2353333053961381988, guid: d98bb411b01d440408aa3e043f5d2aa0, type: 3}
   nextRoundConsoleSpawn: {fileID: 2106968917}
   lobbyCanvas: {fileID: 1298848812}
@@ -4171,7 +4166,11 @@ MonoBehaviour:
   baseGhosts: 1
   ghostsPerRound: 3
   ghostsPerRoundRound: 3
-  ghostPrefab: {fileID: 6757987743279635966, guid: 9efd9f1ea70336b42a83a226a0ba2efb, type: 3}
+  ghostSpawnPoints:
+  - {fileID: 1723515929}
+  patrolRoutes: []
+  ghostPrefabs:
+  - {fileID: 6757987743279635966, guid: 9efd9f1ea70336b42a83a226a0ba2efb, type: 3}
 --- !u!1 &1674754862
 GameObject:
   m_ObjectHideFlags: 0

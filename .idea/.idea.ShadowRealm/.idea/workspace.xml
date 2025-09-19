@@ -8,8 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShadowRealm/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShadowRealm/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/LobbyAndGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LobbyAndGame.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GhostManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GhostManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +106,7 @@
       <updated>1758225138490</updated>
       <workItem from="1758225140393" duration="599000" />
       <workItem from="1758242474266" duration="739000" />
-      <workItem from="1758302892491" duration="4523000" />
+      <workItem from="1758302892491" duration="6264000" />
     </task>
     <servers />
   </component>

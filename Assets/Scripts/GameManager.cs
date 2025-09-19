@@ -13,9 +13,9 @@ public class GameManager : NetworkBehaviour
     [Header("Managers")]
     [SerializeField] private GhostManager ghostManager;
     [Header("Prefabs & Scene References")]
-    [SerializeField] private List<GameObject> ghostPrefabs = new();
-    [SerializeField] private List<Transform> ghostSpawnPoints = new();
-    [SerializeField] private List<PatrolRoute> patrolRoutes = new();
+    // [SerializeField] private List<GameObject> ghostPrefabs = new();
+    // [SerializeField] private List<Transform> ghostSpawnPoints = new();
+    //[SerializeField] private List<PatrolRoute> patrolRoutes = new();
     [SerializeField] private GameObject nextRoundConsolePrefab;
     [SerializeField] private Transform nextRoundConsoleSpawn;
 
@@ -38,8 +38,8 @@ public class GameManager : NetworkBehaviour
     public NetworkVariable<int> PlasmaThreshold = new(0);
     public NetworkVariable<float> TimeRemaining = new(0);
     public NetworkVariable<RoundState> State = new(RoundState.Idle);
-
-    private readonly List<NetworkObject> spawnedGhosts = new();
+    
+    //private readonly List<NetworkObject> spawnedGhosts = new();
     private NetworkObject nextRoundConsole;
     private HashSet<ulong> knockedOutClients = new();
     private Coroutine timerRoutine;
@@ -120,7 +120,7 @@ public class GameManager : NetworkBehaviour
 
         if (timerRoutine != null) { StopCoroutine(timerRoutine); timerRoutine = null; }
 
-        DespawnAllGhostsServer();
+        //DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
         if (victory) ShowEndOfRoundPanelClientRpc();
@@ -133,7 +133,7 @@ public class GameManager : NetworkBehaviour
 
         if (timerRoutine != null) { StopCoroutine(timerRoutine); timerRoutine = null; }
 
-        DespawnAllGhostsServer();
+        //DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
         ShowDefeatPanelClientRpc();
@@ -141,7 +141,7 @@ public class GameManager : NetworkBehaviour
 
     private void CleanupRoundServer()
     {
-        DespawnAllGhostsServer();
+        //DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
         knockedOutClients.Clear();
     }
@@ -165,42 +165,42 @@ public class GameManager : NetworkBehaviour
             EndRoundServer(victory: true);
     }
 
-    private void SpawnGhostsServer(int count)
-    {
-        if (ghostPrefabs.Count == 0 || ghostSpawnPoints.Count == 0) return;
+    // private void SpawnGhostsServer(int count)
+    // {
+    //     if (ghostPrefabs.Count == 0 || ghostSpawnPoints.Count == 0) return;
+    //
+    //     for (int i = 0; i < count; i++)
+    //     {
+    //         // var prefab = ghostPrefabs[Random.Range(0, ghostPrefabs.Count)];
+    //         // var spawn = ghostSpawnPoints[Random.Range(0, ghostSpawnPoints.Count)];
+    //         //
+    //         // var go = Instantiate(prefab, spawn.position, spawn.rotation);
+    //         // var ghostAI = go.GetComponent<GhostAI>();
+    //
+    //         if (patrolRoutes.Count > 0 && ghostAI != null)
+    //         {
+    //             PatrolRoute route = patrolRoutes[Random.Range(0, patrolRoutes.Count)];
+    //             ghostAI.SetPatrolPath(route.Points);
+    //         }
+    //
+    //         var netObj = go.GetComponent<NetworkObject>();
+    //         if (netObj == null) { Destroy(go); continue; }
+    //
+    //         netObj.Spawn(true);
+    //         spawnedGhosts.Add(netObj);
+    //     }
+    // }
 
-        for (int i = 0; i < count; i++)
-        {
-            var prefab = ghostPrefabs[Random.Range(0, ghostPrefabs.Count)];
-            var spawn = ghostSpawnPoints[Random.Range(0, ghostSpawnPoints.Count)];
-
-            var go = Instantiate(prefab, spawn.position, spawn.rotation);
-            var ghostAI = go.GetComponent<GhostAI>();
-
-            if (patrolRoutes.Count > 0 && ghostAI != null)
-            {
-                PatrolRoute route = patrolRoutes[Random.Range(0, patrolRoutes.Count)];
-                ghostAI.SetPatrolPath(route.Points);
-            }
-
-            var netObj = go.GetComponent<NetworkObject>();
-            if (netObj == null) { Destroy(go); continue; }
-
-            netObj.Spawn(true);
-            spawnedGhosts.Add(netObj);
-        }
-    }
-
-    private void DespawnAllGhostsServer()
-    {
-        for (int i = spawnedGhosts.Count - 1; i >= 0; i--)
-        {
-            var netObj = spawnedGhosts[i];
-            if (netObj != null && netObj.IsSpawned)
-                netObj.Despawn(true);
-        }
-        spawnedGhosts.Clear();
-    }
+    // private void DespawnAllGhostsServer()
+    // {
+    //     for (int i = spawnedGhosts.Count - 1; i >= 0; i--)
+    //     {
+    //         var netObj = spawnedGhosts[i];
+    //         if (netObj != null && netObj.IsSpawned)
+    //             netObj.Despawn(true);
+    //     }
+    //     spawnedGhosts.Clear();
+    // }
 
     // -------------------- SCORE / EVENTS (SERVER) --------------------
 
@@ -290,7 +290,7 @@ public class GameManager : NetworkBehaviour
         PlasmaThisRound.Value = 0;
         State.Value = RoundState.Idle;
 
-        DespawnAllGhostsServer();
+        //DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
         // Flip UI on all clients
