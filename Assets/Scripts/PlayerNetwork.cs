@@ -29,30 +29,33 @@ public class PlayerNetwork : NetworkBehaviour
     [Header("Camera Input (optional)")]
     public Behaviour cinemachineInputProvider;
 
-    // -------- NEW: Revive interaction --------
     [Header("Revive")]
     [Tooltip("How close you must be to revive a KO'd teammate.")]
     public float reviveRange = 2.5f;
     [Tooltip("Key to trigger a revive attempt.")]
     public KeyCode reviveKey = KeyCode.E;
-    // -----------------------------------------
+    [Tooltip("How long you must hold the revive key.")]
+    public float reviveDuration = 2.5f;
 
     private CharacterController controller;
     private Animator animator;
 
-    private Vector3 velocity;     // vertical velocity lives here
+    private Vector3 velocity;
     private bool isGrounded;
     private float turnSmoothVelocity;
     private NetworkObject currentPlasmaBall;
 
-    // Input gating
     private bool inputEnabled = true;
 
-    // Cached per-frame inputs (zeroed when input disabled)
+    // Cached per-frame inputs
     Vector2 moveInput;
     bool runHeld;
     bool jumpPressed;
     bool throwPressed;
+
+    // Revive state
+    private PlayerHealth currentReviveTarget;
+    private float reviveHoldTime;
 
     void Awake()
     {
@@ -62,7 +65,6 @@ public class PlayerNetwork : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        // Per-owner camera activation
         if (playerCamera != null)
         {
             playerCamera.gameObject.SetActive(IsOwner);
@@ -86,48 +88,41 @@ public class PlayerNetwork : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        // Hard KO gate (owner cannot act while KO)
         var healthCmp = GetComponent<PlayerHealth>();
         if (healthCmp != null && healthCmp.IsKO)
         {
             inputEnabled = false;
-            // Still allow gravity to apply so the body settles
             HandleGravityAndJump(false);
             UpdateAnimator(Vector2.zero, false);
             return;
         }
 
-        // Enforce cursor & input mode based on GameManager state every frame
         HandleCursorAndInputMode();
-
-        // Gather inputs only if enabled; otherwise zeros
         ReadInputs();
 
-        // NEW: try revive on key press (only while playing + input enabled)
         bool playing = GameManager.Instance != null &&
                        GameManager.Instance.State.Value == GameManager.RoundState.Playing;
-        if (playing && inputEnabled && Input.GetKeyDown(reviveKey))
+
+        if (playing && inputEnabled)
         {
-            TryReviveNearby();
+            HandleReviveInput();
+        }
+        else
+        {
+            UIManager.Instance?.HideRevivePrompt();
+            reviveHoldTime = 0f;
         }
 
-        // Horizontal movement responds only when input is enabled
         HandleMovement(moveInput, runHeld);
-
-        // Gravity & landing always run (prevents mid-air freezing)
         HandleGravityAndJump(jumpPressed);
 
-        // Throw only when input enabled
         if (throwPressed)
             ThrowPlasmaServerRpc();
 
-        // Animator driven by actual state, not by input alone
         UpdateAnimator(moveInput, runHeld);
     }
 
-    // -----------------------------------------
-    // Cursor & Input Mode
-    // -----------------------------------------
+    // ---------------- Cursor & Input ----------------
     void HandleCursorAndInputMode()
     {
         bool playing = GameManager.Instance != null &&
@@ -148,8 +143,7 @@ public class PlayerNetwork : NetworkBehaviour
         }
 
         inputEnabled = playing && (Cursor.lockState == CursorLockMode.Locked);
-
-        SetCinemachineInputEnabled(playing && (Cursor.lockState == CursorLockMode.Locked));
+        SetCinemachineInputEnabled(inputEnabled);
     }
 
     void SetCursorLocked(bool locked)
@@ -172,16 +166,13 @@ public class PlayerNetwork : NetworkBehaviour
             cinemachineInputProvider.enabled = enabled;
     }
 
-    // Public for PlayerHealth to toggle input on KO/Revive
     public void SetInputEnabled(bool enabled)
     {
         inputEnabled = enabled;
         SetCinemachineInputEnabled(enabled);
     }
 
-    // -----------------------------------------
-    // Input
-    // -----------------------------------------
+    // ---------------- Input ----------------
     void ReadInputs()
     {
         if (inputEnabled)
@@ -200,9 +191,7 @@ public class PlayerNetwork : NetworkBehaviour
         }
     }
 
-    // -----------------------------------------
-    // Movement & Physics
-    // -----------------------------------------
+    // ---------------- Movement ----------------
     void HandleMovement(Vector2 input, bool run)
     {
         bool isMoving = input.sqrMagnitude >= 0.01f;
@@ -240,7 +229,6 @@ public class PlayerNetwork : NetworkBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
         velocity.y += gravity * Time.deltaTime;
-
         controller.Move(velocity * Time.deltaTime);
     }
 
@@ -252,9 +240,7 @@ public class PlayerNetwork : NetworkBehaviour
         return transform.eulerAngles.y;
     }
 
-    // -----------------------------------------
-    // Animator
-    // -----------------------------------------
+    // ---------------- Animator ----------------
     void UpdateAnimator(Vector2 input, bool run)
     {
         bool moving = input.sqrMagnitude >= 0.01f;
@@ -266,9 +252,7 @@ public class PlayerNetwork : NetworkBehaviour
         animator.SetBool("isRunning", running);
     }
 
-    // -----------------------------------------
-    // Throw
-    // -----------------------------------------
+    // ---------------- Throw ----------------
     [ServerRpc]
     void ThrowPlasmaServerRpc(ServerRpcParams rpcParams = default)
     {
@@ -284,18 +268,50 @@ public class PlayerNetwork : NetworkBehaviour
         currentPlasmaBall = netObj;
     }
 
-    // -----------------------------------------
-    // -------- NEW: Revive interaction ----------
-    // -----------------------------------------
-
-    private void TryReviveNearby()
+    // ---------------- Revive ----------------
+    private void HandleReviveInput()
     {
-        // Find nearest KO'd teammate in range
+        currentReviveTarget = FindNearbyKOTeammate();
+
+        if (currentReviveTarget != null)
+        {
+            // Always show the revive message when in range
+            if (!Input.GetKey(reviveKey))
+            {
+                reviveHoldTime = 0f;
+                UIManager.Instance?.ShowReviveMessageOnly();
+            }
+            else
+            {
+                // Holding the key → show progress bar
+                reviveHoldTime += Time.deltaTime;
+                float progress = reviveHoldTime / reviveDuration;
+                UIManager.Instance?.UpdateReviveProgress(progress);
+
+                if (reviveHoldTime >= reviveDuration)
+                {
+                    var no = currentReviveTarget.GetComponent<NetworkObject>();
+                    if (no != null)
+                    {
+                        TryReviveTargetServerRpc(new NetworkObjectReference(no));
+                    }
+                    reviveHoldTime = 0f;
+                    currentReviveTarget = null;
+                    UIManager.Instance?.HideRevivePrompt();
+                }
+            }
+        }
+        else
+        {
+            reviveHoldTime = 0f;
+            UIManager.Instance?.HideRevivePrompt();
+        }
+    }
+
+    private PlayerHealth FindNearbyKOTeammate()
+    {
         Collider[] hits = Physics.OverlapSphere(transform.position, reviveRange);
         NetworkObject selfNO = GetComponent<NetworkObject>();
-        NetworkObject targetNO = null;
-        PlayerHealth targetPH = null;
-        float bestDist = float.MaxValue;
 
         foreach (var h in hits)
         {
@@ -305,27 +321,11 @@ public class PlayerNetwork : NetworkBehaviour
             var no = ph.GetComponent<NetworkObject>();
             if (no == null || !no.IsSpawned) continue;
 
-            // Cannot revive yourself
             if (selfNO != null && no.NetworkObjectId == selfNO.NetworkObjectId) continue;
 
-            float d = Vector3.Distance(transform.position, ph.transform.position);
-            if (d < bestDist)
-            {
-                bestDist = d;
-                targetPH = ph;
-                targetNO = no;
-            }
+            return ph;
         }
-
-        if (targetNO != null && targetPH != null)
-        {
-            // Ask the server to validate distance and perform the revive
-            TryReviveTargetServerRpc(new NetworkObjectReference(targetNO));
-        }
-        else
-        {
-            // No valid KO target in range; noop
-        }
+        return null;
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -336,19 +336,15 @@ public class PlayerNetwork : NetworkBehaviour
         var targetPH = targetObj.GetComponent<PlayerHealth>();
         if (targetPH == null || !targetPH.IsSpawned || !targetPH.IsKO) return;
 
-        // Find the reviver's server-side player object
         if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(rpc.Receive.SenderClientId, out var reviverClient))
             return;
 
         var reviverObj = reviverClient.PlayerObject;
         if (reviverObj == null) return;
 
-        // Distance check on the server (authoritative)
         float dist = Vector3.Distance(reviverObj.transform.position, targetObj.transform.position);
-        if (dist > reviveRange + 0.75f) // small server-side leeway
-            return;
+        if (dist > reviveRange + 0.75f) return;
 
-        // Perform revive on the server (no nested RPC needed)
         targetPH.ServerReviveImmediate();
     }
 }
