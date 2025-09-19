@@ -29,8 +29,6 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private TMPro.TMP_Text hudJoinCodeText; // Lives on HUD
 
     [Header("Round Scaling")]
-    [SerializeField] private int baseGhosts = 6;
-    [SerializeField] private int ghostsPerRound = 3;
     [SerializeField] private float baseTimeSeconds = 120f;
     [SerializeField] private float timePerRound = 30f;
     [SerializeField] private int basePlasmaThreshold = 10;
@@ -51,7 +49,7 @@ public class GameManager : NetworkBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        ghostManager.SetRoundValue(Round.Value);
+        //ghostManager.SetRoundValue(Round.Value);
     }
 
     public override void OnNetworkSpawn()
@@ -101,13 +99,10 @@ public class GameManager : NetworkBehaviour
 
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
-
+        
         // ✅ NEW: place all players at spawn points at round start
         PositionPlayersAtSpawnsServer(alsoHeal: false);
-
-        int ghostCount = baseGhosts + ghostsPerRound * (Round.Value - 1);
-        SpawnGhostsServer(ghostCount);
-
+        ghostManager.StartRoundServer(Round.Value);
         if (timerRoutine != null) StopCoroutine(timerRoutine);
         timerRoutine = StartCoroutine(RoundTimerRoutine());
 
@@ -122,7 +117,7 @@ public class GameManager : NetworkBehaviour
 
         if (timerRoutine != null) { StopCoroutine(timerRoutine); timerRoutine = null; }
 
-        //DespawnAllGhostsServer();
+        ghostManager.DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
         if (victory) ShowEndOfRoundPanelClientRpc();
@@ -135,7 +130,7 @@ public class GameManager : NetworkBehaviour
 
         if (timerRoutine != null) { StopCoroutine(timerRoutine); timerRoutine = null; }
 
-        //DespawnAllGhostsServer();
+        ghostManager.DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
         ShowDefeatPanelClientRpc();
@@ -143,7 +138,7 @@ public class GameManager : NetworkBehaviour
 
     private void CleanupRoundServer()
     {
-        //DespawnAllGhostsServer();
+        ghostManager.DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
         knockedOutClients.Clear();
     }
@@ -292,7 +287,7 @@ public class GameManager : NetworkBehaviour
         PlasmaThisRound.Value = 0;
         State.Value = RoundState.Idle;
 
-        //DespawnAllGhostsServer();
+        ghostManager.DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
         // Flip UI on all clients
@@ -314,7 +309,7 @@ public class GameManager : NetworkBehaviour
         PlasmaThisRound.Value = 0;
         ApplyRoundScaling();
 
-        DespawnAllGhostsServer();
+        ghostManager.DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
         knockedOutClients.Clear();
 

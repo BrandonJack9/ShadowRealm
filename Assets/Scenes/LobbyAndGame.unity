@@ -2622,9 +2622,7 @@ MonoBehaviour:
   hudCanvas: {fileID: 413522814}
   joinCodeText: {fileID: 1320401644}
   hudJoinCodeText: {fileID: 51268773}
-  baseGhosts: 1
-  ghostsPerRound: 3
-  baseTimeSeconds: 120
+  baseTimeSeconds: 3
   timePerRound: 30
   basePlasmaThreshold: 1
   plasmaPerRound: 2

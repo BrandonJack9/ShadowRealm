@@ -19,20 +19,23 @@ public class GhostManager : NetworkBehaviour
     private readonly List<NetworkObject> spawnedGhosts = new();
     private int currentRound = 0;
     //private int ghostCount = 0;
-    public void SetRoundValue(int round)
+    
+
+    
+    
+    // public void SetRoundValue(int round)
+    // {
+    //     currentRound = round;
+    // }
+    public void StartRoundServer(int round)
     {
         currentRound = round;
-    }
-    private void StartRoundServer()
-    {
         int ghostCount = baseGhosts + ghostsPerRound * (currentRound - 1);
         SpawnGhostServer(ghostCount);
-
     }
-
+    
     private void SpawnGhostServer(int count)
     {
-        Debug.Log("wat");
         if (ghostPrefabs.Count == 0 || ghostSpawnPoints.Count == 0) return;
 
         for (int i = 0; i < count; i++)
@@ -53,17 +56,27 @@ public class GhostManager : NetworkBehaviour
             
             netObj.Spawn(true);
             spawnedGhosts.Add(netObj);
-            
         }
+    }
+
+    public void DespawnAllGhostsServer()
+    {
+        for (int i = 0; i < spawnedGhosts.Count; i++)
+        {
+            NetworkObject netObj = spawnedGhosts[i];
+            if (netObj != null && netObj.IsSpawned)
+            {
+                netObj.Despawn(true);
+            }
+        }
+        spawnedGhosts.Clear();
+        
     }
 
     
     public override void OnNetworkSpawn()
     {
-        if (IsServer)
-        {
-            StartRoundServer();
-        }
+        
     }
     
     
