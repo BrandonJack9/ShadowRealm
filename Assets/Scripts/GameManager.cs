@@ -10,7 +10,8 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance { get; private set; }
 
     public enum RoundState { Idle, Playing, RoundEnded, Defeat }
-
+    [Header("Managers")]
+    [SerializeField] private GhostManager ghostManager;
     [Header("Prefabs & Scene References")]
     [SerializeField] private List<GameObject> ghostPrefabs = new();
     [SerializeField] private List<Transform> ghostSpawnPoints = new();
@@ -47,10 +48,12 @@ public class GameManager : NetworkBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        ghostManager.SetRoundValue(Round.Value);
     }
 
     public override void OnNetworkSpawn()
     {
+
         // SERVER: initialize round and start
         if (IsServer)
         {
@@ -100,9 +103,9 @@ public class GameManager : NetworkBehaviour
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
 
-        int ghostCount = baseGhosts + ghostsPerRound * (Round.Value - 1);
-        SpawnGhostsServer(ghostCount);
-
+        //int ghostCount = baseGhosts + ghostsPerRound * (Round.Value - 1);
+        //SpawnGhostsServer(ghostCount);
+        //ghostManager.SpawnGhostServer();
         if (timerRoutine != null) StopCoroutine(timerRoutine);
         timerRoutine = StartCoroutine(RoundTimerRoutine());
 
