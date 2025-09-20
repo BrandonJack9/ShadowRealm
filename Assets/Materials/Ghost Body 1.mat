@@ -8,12 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Ghost Body 1
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 28449263d9b1ac14483140cccedd1e9f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ALPHAPREMULTIPLY_ON
-  - _EMISSION
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 1
@@ -25,7 +23,6 @@ Material:
   disabledShaderPasses:
   - MOTIONVECTORS
   - DepthOnly
-  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -62,7 +59,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal_Map:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Occlusion_Map:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -70,8 +75,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_1c08574a63494632b5a202de1bd5b0a6_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 83945e8cbb6ce6244903ca1ddfcaa625, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar_15116c19c04c41f3a1d42411f522deca_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 83945e8cbb6ce6244903ca1ddfcaa625, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -90,10 +103,12 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
+    - _AlphaClipThreshold: 0.5
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -110,17 +125,24 @@ Material:
     - _Mode: 3
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Preserve_Specular_Intensity: 1
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.9015748
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 1
+    - _Specular_Brightness: 64.4
+    - _Specular_Focus: 454.29
+    - _Specular_Highlights: 1
+    - _SrcBlend: 5
     - _SrcBlendAlpha: 1
     - _Surface: 1
     - _UVSec: 0
     - _WorkflowMode: 1
+    - _ZTest: 4
     - _ZWrite: 0
+    - _ZWriteControl: 0
     m_Colors:
     - _BaseColor: {r: 0.23458958, g: 0.34999806, b: 0.34619898, a: 0.97637796}
     - _Color: {r: 0.23458955, g: 0.34999803, b: 0.34619895, a: 0.97637796}
