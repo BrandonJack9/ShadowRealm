@@ -221,7 +221,7 @@
             "m_Id": "60ddf85c796a44c7a63f5b303a098b80"
         },
         {
-            "m_Id": "3dee95b4e97443b482ef270d15449dd4"
+            "m_Id": "ae7d876b62f44af9878573dbc4e9315d"
         }
     ],
     "m_GroupDatas": [
@@ -266,9 +266,6 @@
         },
         {
             "m_Id": "bdb1ded065004cee89e778ab237a8c8a"
-        },
-        {
-            "m_Id": "85858c481f744902a5701ad1bb2ea85d"
         }
     ],
     "m_StickyNoteDatas": [],
@@ -535,20 +532,6 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "664453dce0544093838136db3c78702a"
-                },
-                "m_SlotId": 1
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "3dee95b4e97443b482ef270d15449dd4"
-                },
-                "m_SlotId": 1
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "60ddf85c796a44c7a63f5b303a098b80"
                 },
                 "m_SlotId": 1
             }
@@ -871,6 +854,20 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "b6b94db2530d40d5bf4b8fd9fb308589"
+                },
+                "m_SlotId": 1
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "ae7d876b62f44af9878573dbc4e9315d"
+                },
+                "m_SlotId": 1
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "60ddf85c796a44c7a63f5b303a098b80"
                 },
                 "m_SlotId": 1
             }
@@ -1563,6 +1560,29 @@
 }
 
 {
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
+    "m_ObjectId": "0ae45f04a13c4106aa42b920f0954952",
+    "m_Id": 1,
+    "m_DisplayName": "Out_Vector1",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out_Vector1",
+    "m_StageCapability": 2,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_Labels": []
+}
+
+{
     "m_SGVersion": 3,
     "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
     "m_ObjectId": "0b661ff5891648c1a010a537b5ba56df",
@@ -1680,8 +1700,8 @@
     "m_ObjectId": "0d909f5a26cd41baa4cd52be7773f2de",
     "m_Title": "Add Addl Lights",
     "m_Position": {
-        "x": 927.0,
-        "y": 268.999755859375
+        "x": 927.0001220703125,
+        "y": 269.0
     }
 }
 
@@ -1792,8 +1812,8 @@
     "m_ObjectId": "105e887c913d4126b71b0c8e783f617d",
     "m_Title": "Add Emission",
     "m_Position": {
-        "x": 1851.0,
-        "y": -290.0001220703125
+        "x": 1851.00048828125,
+        "y": -290.00006103515627
     }
 }
 
@@ -2354,7 +2374,7 @@
     "m_Title": "Main Diffuse + Color",
     "m_Position": {
         "x": -666.0001220703125,
-        "y": -292.0
+        "y": -292.00006103515627
     }
 }
 
@@ -2539,8 +2559,8 @@
     "m_ObjectId": "2ae863553982410597ccfd14cbf0b9f7",
     "m_Title": "Add Ambient",
     "m_Position": {
-        "x": 1816.0,
-        "y": -23.0
+        "x": 1816.0001220703125,
+        "y": -23.00006103515625
     }
 }
 
@@ -2656,8 +2676,8 @@
     "m_ObjectId": "33d26545ee8d4732a80b4906f8858109",
     "m_Title": "Main Specular (Blinn)",
     "m_Position": {
-        "x": -1320.0003662109375,
-        "y": -749.0001220703125
+        "x": -1320.0001220703125,
+        "y": -749.0000610351563
     }
 }
 
@@ -2668,7 +2688,7 @@
     "m_Title": "Base Color",
     "m_Position": {
         "x": 309.0,
-        "y": -272.0001220703125
+        "y": -272.00006103515627
     }
 }
 
@@ -2997,44 +3017,6 @@
         "e32": 0.0,
         "e33": 1.0
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.SubGraphNode",
-    "m_ObjectId": "3dee95b4e97443b482ef270d15449dd4",
-    "m_Group": {
-        "m_Id": "85858c481f744902a5701ad1bb2ea85d"
-    },
-    "m_Name": "Fog",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": 776.5001220703125,
-            "y": -1158.75,
-            "width": 0.0,
-            "height": 0.0
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "9cdc00d9965b4d94b96832849e40e0b5"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_SerializedSubGraph": "{\n    \"subGraph\": {\n        \"fileID\": -5475051401550479605,\n        \"guid\": \"dc958be53f5dfe94e83fc6edfa4f6661\",\n        \"type\": 3\n    }\n}",
-    "m_PropertyGuids": [],
-    "m_PropertyIds": [],
-    "m_Dropdowns": [],
-    "m_DropdownSelectedEntries": []
 }
 
 {
@@ -3844,7 +3826,7 @@
     "m_Title": "Additional Lights (Toon)",
     "m_Position": {
         "x": -689.0001220703125,
-        "y": 178.999755859375
+        "y": 179.0
     }
 }
 
@@ -4150,8 +4132,8 @@
     "m_ObjectId": "658ba7af5bb149a78b3d0905c421819f",
     "m_Title": "Apply Light Color",
     "m_Position": {
-        "x": 482.99993896484377,
-        "y": 170.999755859375
+        "x": 483.0,
+        "y": 171.0
     }
 }
 
@@ -4817,17 +4799,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.GroupData",
-    "m_ObjectId": "85858c481f744902a5701ad1bb2ea85d",
-    "m_Title": "Fopg",
-    "m_Position": {
-        "x": 752.0,
-        "y": -1218.0001220703125
-    }
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "85a7881b30f544a6ac56c913ed767d09",
     "m_Id": 0,
@@ -5357,29 +5328,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
-    "m_ObjectId": "9cdc00d9965b4d94b96832849e40e0b5",
-    "m_Id": 1,
-    "m_DisplayName": "Out_Vector1",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Out_Vector1",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "9fd51c0eafc2475b88b94b441287023e",
     "m_Id": 7,
@@ -5678,6 +5626,44 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.SubGraphNode",
+    "m_ObjectId": "ae7d876b62f44af9878573dbc4e9315d",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Fog3D",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 2160.0,
+            "y": -912.0000610351563,
+            "width": 208.0,
+            "height": 279.00006103515627
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "0ae45f04a13c4106aa42b920f0954952"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SerializedSubGraph": "{\n    \"subGraph\": {\n        \"fileID\": -5475051401550479605,\n        \"guid\": \"1b870a5f50a309847b7fe45a6d849af4\",\n        \"type\": 3\n    }\n}",
+    "m_PropertyGuids": [],
+    "m_PropertyIds": [],
+    "m_Dropdowns": [],
+    "m_DropdownSelectedEntries": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "b026e60b42a84218bf03976fa3c58552",
     "m_Id": 0,
@@ -5777,8 +5763,8 @@
     "m_ObjectId": "b1b33658d4ab4c7eb68008b21d54e2d1",
     "m_Title": "Light * Base",
     "m_Position": {
-        "x": 1298.0,
-        "y": 133.0
+        "x": 1298.0001220703125,
+        "y": 132.99993896484376
     }
 }
 
@@ -5789,7 +5775,7 @@
     "m_Title": "Specular Mask",
     "m_Position": {
         "x": 260.0,
-        "y": -538.0001220703125
+        "y": -538.0000610351563
     }
 }
 
@@ -6179,8 +6165,8 @@
     "m_ObjectId": "bdb1ded065004cee89e778ab237a8c8a",
     "m_Title": "Mix Fog",
     "m_Position": {
-        "x": 2201.0,
-        "y": -313.0001220703125
+        "x": 2201.00048828125,
+        "y": -313.0000305175781
     }
 }
 
@@ -6802,8 +6788,8 @@
     "m_ObjectId": "d92c568894034e8dbcdb8bf5adc7ae97",
     "m_Title": "Ambient",
     "m_Position": {
-        "x": 973.0,
-        "y": -272.0001220703125
+        "x": 973.0001220703125,
+        "y": -272.00006103515627
     }
 }
 
@@ -7022,8 +7008,8 @@
     "m_ObjectId": "dc4665ba0e2c466391405aaf40ae18c4",
     "m_Title": "Alpha",
     "m_Position": {
-        "x": 1267.0,
-        "y": -649.0
+        "x": 1267.0001220703125,
+        "y": -649.0000610351563
     }
 }
 
