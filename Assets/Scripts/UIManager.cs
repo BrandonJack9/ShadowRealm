@@ -11,10 +11,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text roundText;
     [SerializeField] private TMP_Text joinCodeHUD;
-
+    [SerializeField] private PlayerHealth playerHealth;
+        
     [Header("Panels")]
     [SerializeField] private GameObject defeatPanel;
     [SerializeField] private GameObject endOfRoundPanel;
+    [SerializeField] private Image healthBar;
 
     [Header("Buttons")]
     public Button NextRoundButton;
@@ -128,5 +130,10 @@ public class UIManager : MonoBehaviour
         Debug.Log("[UIManager] Restart button clicked (local)");
         if (GameManager.Instance != null)
             GameManager.Instance.HostRestartGameServerRpc();
+    }
+    
+    public void UpdateHealthBar()
+    {
+        healthBar.fillAmount = playerHealth.GetHealth() / playerHealth.GetMaxHealth();
     }
 }

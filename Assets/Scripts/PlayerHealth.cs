@@ -10,8 +10,8 @@ public class PlayerHealth : NetworkBehaviour
 {
     [Header("Health")]
     [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private UIManager uiManager;
 
-    [SerializeField] private Image healthBar;
     // Server-authoritative health; everyone reads, only server writes.
     private NetworkVariable<float> health = new NetworkVariable<float>(
         100f,
@@ -20,7 +20,16 @@ public class PlayerHealth : NetworkBehaviour
     );
 
     private KnockoutReporter knockout;
+    //getter for health in UIManager.cs:
+    public float GetHealth()
+    {
+        return health.Value;
+    }
 
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
     /// <summary>
     /// Shown in the Inspector so you can watch it live.
     /// Mirrors the networked value 'health.Value'. Do not edit at runtime.
@@ -34,12 +43,6 @@ public class PlayerHealth : NetworkBehaviour
     {
         knockout = GetComponent<KnockoutReporter>();
     }
-
-    public void UpdateHealthBar()
-    {
-        healthBar.fillAmount = health.Value / maxHealth;
-
-    }
     public override void OnNetworkSpawn()
     {
         if (IsServer)
@@ -47,13 +50,13 @@ public class PlayerHealth : NetworkBehaviour
             health.Value = Mathf.Clamp(health.Value <= 0 ? maxHealth : health.Value, 0f, maxHealth);
         }
 
-        UpdateHealthBar();
+        uiManager.UpdateHealthBar();
         // Keep mirror field and KO state in sync for all peers.
         UpdateMirrorAndKOState(health.Value);
         health.OnValueChanged += (_, newVal) =>
         {
             UpdateMirrorAndKOState(newVal);
-            UpdateHealthBar(); // not sure if we need this?
+            uiManager.UpdateHealthBar(); // not sure if we need this?
         };
     }
 
@@ -84,7 +87,7 @@ public class PlayerHealth : NetworkBehaviour
     {
         if (IsKO) return;
         health.Value = Mathf.Max(0f, health.Value - Mathf.Max(0f, dmg));
-        healthBar.fillAmount =  health.Value / maxHealth;
+        uiManager.UpdateHealthBar();
         
         if (health.Value <= 0f)
         {
@@ -113,7 +116,7 @@ public class PlayerHealth : NetworkBehaviour
         if (!IsKO) return;
 
         health.Value = Mathf.Clamp(maxHealth * 0.5f, 1f, maxHealth); // bring back at 50%
-        UpdateHealthBar();
+        uiManager.UpdateHealthBar();
         GameManager.Instance?.NotifyPlayerRevivedServerRpc(OwnerClientId);
         OnReviveClientRpc();
     }
