@@ -1,6 +1,6 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
-
+using UnityEngine.UI;
 /// <summary>
 /// Attach to player prefab. Handles taking damage, KO, and revive.
 /// </summary>
@@ -11,6 +11,7 @@ public class PlayerHealth : NetworkBehaviour
     [Header("Health")]
     [SerializeField] private float maxHealth = 100f;
 
+    [SerializeField] private Image healthBar;
     // Server-authoritative health; everyone reads, only server writes.
     private NetworkVariable<float> health = new NetworkVariable<float>(
         100f,
@@ -28,12 +29,17 @@ public class PlayerHealth : NetworkBehaviour
     public float CurrentHealth;
 
     public bool IsKO => health.Value <= 0f;
-
+    
     private void Awake()
     {
         knockout = GetComponent<KnockoutReporter>();
     }
 
+    public void UpdateHealthBar()
+    {
+        healthBar.fillAmount = health.Value / maxHealth;
+
+    }
     public override void OnNetworkSpawn()
     {
         if (IsServer)
@@ -41,11 +47,13 @@ public class PlayerHealth : NetworkBehaviour
             health.Value = Mathf.Clamp(health.Value <= 0 ? maxHealth : health.Value, 0f, maxHealth);
         }
 
+        UpdateHealthBar();
         // Keep mirror field and KO state in sync for all peers.
         UpdateMirrorAndKOState(health.Value);
         health.OnValueChanged += (_, newVal) =>
         {
             UpdateMirrorAndKOState(newVal);
+            UpdateHealthBar(); // not sure if we need this?
         };
     }
 
@@ -71,13 +79,13 @@ public class PlayerHealth : NetworkBehaviour
     }
 
     // ---------------- DAMAGE ----------------
-
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(float dmg)
     {
         if (IsKO) return;
         health.Value = Mathf.Max(0f, health.Value - Mathf.Max(0f, dmg));
-
+        healthBar.fillAmount =  health.Value / maxHealth;
+        
         if (health.Value <= 0f)
         {
             GameManager.Instance?.NotifyPlayerKOdServerRpc(OwnerClientId);
@@ -96,7 +104,7 @@ public class PlayerHealth : NetworkBehaviour
                 net.SetInputEnabled(false);
         }
     }
-
+    
     // ---------------- REVIVE ----------------
     // Server-side immediate revive (used by PlayerNetwork's server RPC after validation).
     public void ServerReviveImmediate()
@@ -105,6 +113,7 @@ public class PlayerHealth : NetworkBehaviour
         if (!IsKO) return;
 
         health.Value = Mathf.Clamp(maxHealth * 0.5f, 1f, maxHealth); // bring back at 50%
+        UpdateHealthBar();
         GameManager.Instance?.NotifyPlayerRevivedServerRpc(OwnerClientId);
         OnReviveClientRpc();
     }
