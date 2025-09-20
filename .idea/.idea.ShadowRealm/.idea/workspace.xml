@@ -5,26 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="74bdd01c-f985-4a31-8cfb-05d3a768af79" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/bin.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/bin/Debug.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/bin/Debug/net10.0.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/bin/Debug/net10.0/ref.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj/Debug.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj/Debug/net10.0.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj/Debug/net10.0/GameManager.AssemblyInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj/Debug/net10.0/GameManager.AssemblyInfo.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj/Debug/net10.0/GameManager.AssemblyInfoInputs.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj/Debug/net10.0/GameManager.AssemblyInfoInputs.cache.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj/Debug/net10.0/GameManager.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj/Debug/net10.0/GameManager.GeneratedMSBuildEditorConfig.editorconfig.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/obj/Debug/net10.0/ref.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShadowRealm/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShadowRealm/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LobbyAndGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LobbyAndGame.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Ghost1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Ghost1.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GhostAI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GhostAI.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GhostManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GhostManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,6 +116,9 @@
       <workItem from="1758302892491" duration="6264000" />
       <workItem from="1758321537658" duration="653000" />
       <workItem from="1758322231847" duration="1287000" />
+      <workItem from="1758402789436" duration="154000" />
+      <workItem from="1758402947432" duration="8000" />
+      <workItem from="1758402984517" duration="374000" />
     </task>
     <servers />
   </component>

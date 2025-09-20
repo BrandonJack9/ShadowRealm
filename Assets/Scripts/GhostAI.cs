@@ -47,7 +47,7 @@ public class GhostAI : NetworkBehaviour
 
     // Server-authoritative state
     private State currentState = State.Idle;
-    private readonly List<Vector3> patrolPoints = new();
+    //private readonly List<Vector3> patrolPoints = new();
     private int patrolIndex = 0;
 
     private float lastAttackTime = -999f;
@@ -147,29 +147,29 @@ public class GhostAI : NetworkBehaviour
     }
 
     // ---------------- Patrol / Wander ----------------
-    public void SetPatrolPath(IEnumerable<Transform> points)
-    {
-        patrolPoints.Clear();
-        if (points != null) foreach (var t in points) if (t) patrolPoints.Add(t.position);
-    }
-
-    public void SetPatrolPath(IEnumerable<Vector3> points)
-    {
-        patrolPoints.Clear();
-        if (points != null) patrolPoints.AddRange(points);
-    }
+    // public void SetPatrolPath(IEnumerable<Transform> points)
+    // {
+    //     patrolPoints.Clear();
+    //     if (points != null) foreach (var t in points) if (t) patrolPoints.Add(t.position);
+    // }
+    //
+    // public void SetPatrolPath(IEnumerable<Vector3> points)
+    // {
+    //     patrolPoints.Clear();
+    //     if (points != null) patrolPoints.AddRange(points);
+    // }
 
     private void BeginPatrolOrWander()
     {
         if (!agent.enabled || !agent.isOnNavMesh) return;
 
-        if (patrolPoints.Count > 0)
-        {
-            currentState = State.Patrolling;
-            patrolIndex = 0;
-            agent.isStopped = false;
-            agent.SetDestination(patrolPoints[patrolIndex]);
-        }
+        // if (patrolPoints.Count > 0)
+        // {
+        //     currentState = State.Patrolling;
+        //     patrolIndex = 0;
+        //     agent.isStopped = false;
+        //     agent.SetDestination(patrolPoints[patrolIndex]);
+        // }
         else if (enableWanderFallback)
         {
             SetWanderDestination();
@@ -186,14 +186,14 @@ public class GhostAI : NetworkBehaviour
     {
         if (!agent.enabled || !agent.isOnNavMesh) { TryRecoverToNavmesh(); return; }
 
-        if (patrolPoints.Count > 0)
-        {
-            if (!agent.pathPending && agent.remainingDistance <= waypointTolerance)
-            {
-                patrolIndex = (patrolIndex + 1) % patrolPoints.Count;
-                agent.SetDestination(patrolPoints[patrolIndex]);
-            }
-        }
+        // if (patrolPoints.Count > 0)
+        // {
+        //     if (!agent.pathPending && agent.remainingDistance <= waypointTolerance)
+        //     {
+        //         patrolIndex = (patrolIndex + 1) % patrolPoints.Count;
+        //         agent.SetDestination(patrolPoints[patrolIndex]);
+        //     }
+        // }
         else if (enableWanderFallback)
         {
             if (!agent.pathPending && agent.remainingDistance <= waypointTolerance || Time.time >= nextWanderTime)
@@ -254,19 +254,19 @@ public class GhostAI : NetworkBehaviour
 
     private void ReturnToRoam()
     {
-        if (patrolPoints.Count > 0 || enableWanderFallback)
-        {
-            currentState = State.Patrolling;
-            if (patrolPoints.Count > 0)
-                agent.SetDestination(patrolPoints[patrolIndex]);
-            else
-                SetWanderDestination();
-        }
-        else
-        {
+        // if (patrolPoints.Count > 0 || enableWanderFallback)
+        // {
+        //     currentState = State.Patrolling;
+        //     if (patrolPoints.Count > 0)
+        //         agent.SetDestination(patrolPoints[patrolIndex]);
+        //     else
+        //         SetWanderDestination();
+        // }
+        
+        
             currentState = State.Idle;
             agent.isStopped = true;
-        }
+            
     }
 
     private void LookForPlayer()

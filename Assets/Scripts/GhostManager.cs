@@ -12,7 +12,7 @@ public class GhostManager : NetworkBehaviour
     [SerializeField] private int ghostsPerRoundRound = 3;
     [Header("Ghost Position and Initial Movement")]
     [SerializeField] private List<Transform> ghostSpawnPoints = new();
-    [SerializeField] private List<PatrolRoute> patrolRoutes = new();
+    //[SerializeField] private List<PatrolRoute> patrolRoutes = new();
     [Header("Prefabs")] 
     [SerializeField] private List <GameObject> ghostPrefabs;
     
@@ -44,12 +44,6 @@ public class GhostManager : NetworkBehaviour
             Transform spawnPoint = ghostSpawnPoints[Random.Range(0, ghostSpawnPoints.Count)];
             GameObject currPrefab = Instantiate(prefabOfChoice, spawnPoint.position, spawnPoint.rotation);
             GhostAI currGhostAI = currPrefab.GetComponent<GhostAI>();
-
-            if (patrolRoutes.Count > 0 && currGhostAI != null)
-            {
-                PatrolRoute route = patrolRoutes[Random.Range(0, patrolRoutes.Count)];
-                currGhostAI.SetPatrolPath(route.Points);
-            }
             
             NetworkObject netObj = currPrefab.GetComponent<NetworkObject>();
             if (netObj == null) {Destroy(currPrefab); continue;}

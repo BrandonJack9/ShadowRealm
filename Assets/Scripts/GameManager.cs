@@ -162,42 +162,7 @@ public class GameManager : NetworkBehaviour
             EndRoundServer(victory: true);
     }
 
-    // private void SpawnGhostsServer(int count)
-    // {
-    //     if (ghostPrefabs.Count == 0 || ghostSpawnPoints.Count == 0) return;
-    //
-    //     for (int i = 0; i < count; i++)
-    //     {
-    //         // var prefab = ghostPrefabs[Random.Range(0, ghostPrefabs.Count)];
-    //         // var spawn = ghostSpawnPoints[Random.Range(0, ghostSpawnPoints.Count)];
-    //         //
-    //         // var go = Instantiate(prefab, spawn.position, spawn.rotation);
-    //         // var ghostAI = go.GetComponent<GhostAI>();
-    //
-    //         if (patrolRoutes.Count > 0 && ghostAI != null)
-    //         {
-    //             PatrolRoute route = patrolRoutes[Random.Range(0, patrolRoutes.Count)];
-    //             ghostAI.SetPatrolPath(route.Points);
-    //         }
-    //
-    //         var netObj = go.GetComponent<NetworkObject>();
-    //         if (netObj == null) { Destroy(go); continue; }
-    //
-    //         netObj.Spawn(true);
-    //         spawnedGhosts.Add(netObj);
-    //     }
-    // }
-
-    // private void DespawnAllGhostsServer()
-    // {
-    //     for (int i = spawnedGhosts.Count - 1; i >= 0; i--)
-    //     {
-    //         var netObj = spawnedGhosts[i];
-    //         if (netObj != null && netObj.IsSpawned)
-    //             netObj.Despawn(true);
-    //     }
-    //     spawnedGhosts.Clear();
-    // }
+    
 
     // -------------------- SCORE / EVENTS (SERVER) --------------------
 
