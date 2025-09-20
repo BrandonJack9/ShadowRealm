@@ -3,7 +3,22 @@ guid: c7ffc2e270b4ea54cb7e1bdea8e77fbd
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ghost Body 1
+    second: {fileID: 2100000, guid: aea109908d974634fa0edc0dc077db90, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ghost Eyes 1
+    second: {fileID: 2100000, guid: 48e698aae48245441923fbe61bb03611, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ghost Eyes Pupil
+    second: {fileID: 2100000, guid: 5d137ff9920eaae44bf1adc6b4dbdeab, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
