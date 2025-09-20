@@ -60,18 +60,28 @@ public class UIManager : MonoBehaviour
     {
         if (defeatPanel != null)
             defeatPanel.SetActive(true);
+
+        // 🔓 Release cursor so buttons can be clicked
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void ShowEndOfRoundPanel()
     {
         if (endOfRoundPanel != null)
             endOfRoundPanel.SetActive(true);
+
+        // 🔓 Release cursor so buttons can be clicked
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void HideAllPanels()
     {
         if (defeatPanel != null) defeatPanel.SetActive(false);
         if (endOfRoundPanel != null) endOfRoundPanel.SetActive(false);
+
+        // (Optional) leave cursor alone here — PlayerNetwork will handle re-locking when gameplay resumes
     }
 
     // ---------------- Revive Prompt ----------------
@@ -128,5 +138,9 @@ public class UIManager : MonoBehaviour
         Debug.Log("[UIManager] Restart button clicked (local)");
         if (GameManager.Instance != null)
             GameManager.Instance.HostRestartGameServerRpc();
+
+        // Optionally lock cursor again immediately after restart
+        // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
     }
 }
