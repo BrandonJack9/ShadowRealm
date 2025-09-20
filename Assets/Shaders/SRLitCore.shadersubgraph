@@ -1680,8 +1680,8 @@
     "m_ObjectId": "0d909f5a26cd41baa4cd52be7773f2de",
     "m_Title": "Add Addl Lights",
     "m_Position": {
-        "x": 926.9999389648438,
-        "y": 269.00030517578127
+        "x": 927.0,
+        "y": 268.999755859375
     }
 }
 
@@ -1793,7 +1793,7 @@
     "m_Title": "Add Emission",
     "m_Position": {
         "x": 1851.0,
-        "y": -289.99969482421877
+        "y": -290.0001220703125
     }
 }
 
@@ -2353,7 +2353,7 @@
     "m_ObjectId": "24dd817bce834847ba1699411344e055",
     "m_Title": "Main Diffuse + Color",
     "m_Position": {
-        "x": -666.0000610351563,
+        "x": -666.0001220703125,
         "y": -292.0
     }
 }
@@ -2539,8 +2539,8 @@
     "m_ObjectId": "2ae863553982410597ccfd14cbf0b9f7",
     "m_Title": "Add Ambient",
     "m_Position": {
-        "x": 1816.0001220703125,
-        "y": -22.999691009521486
+        "x": 1816.0,
+        "y": -23.0
     }
 }
 
@@ -2656,8 +2656,8 @@
     "m_ObjectId": "33d26545ee8d4732a80b4906f8858109",
     "m_Title": "Main Specular (Blinn)",
     "m_Position": {
-        "x": -1320.0001220703125,
-        "y": -749.0
+        "x": -1320.0003662109375,
+        "y": -749.0001220703125
     }
 }
 
@@ -2668,7 +2668,7 @@
     "m_Title": "Base Color",
     "m_Position": {
         "x": 309.0,
-        "y": -272.0
+        "y": -272.0001220703125
     }
 }
 
@@ -3019,7 +3019,7 @@
     },
     "m_Slots": [
         {
-            "m_Id": "bdeeedb201e146dd9fb905dadb7e40f7"
+            "m_Id": "9cdc00d9965b4d94b96832849e40e0b5"
         }
     ],
     "synonyms": [],
@@ -3843,8 +3843,8 @@
     "m_ObjectId": "5bebcbcc2666407eafe9a2c5d1ee8fec",
     "m_Title": "Additional Lights (Toon)",
     "m_Position": {
-        "x": -689.0000610351563,
-        "y": 179.000244140625
+        "x": -689.0001220703125,
+        "y": 178.999755859375
     }
 }
 
@@ -4150,8 +4150,8 @@
     "m_ObjectId": "658ba7af5bb149a78b3d0905c421819f",
     "m_Title": "Apply Light Color",
     "m_Position": {
-        "x": 483.0,
-        "y": 171.0
+        "x": 482.99993896484377,
+        "y": 170.999755859375
     }
 }
 
@@ -5357,6 +5357,29 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
+    "m_ObjectId": "9cdc00d9965b4d94b96832849e40e0b5",
+    "m_Id": 1,
+    "m_DisplayName": "Out_Vector1",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out_Vector1",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "9fd51c0eafc2475b88b94b441287023e",
     "m_Id": 7,
@@ -5766,7 +5789,7 @@
     "m_Title": "Specular Mask",
     "m_Position": {
         "x": 260.0,
-        "y": -538.0
+        "y": -538.0001220703125
     }
 }
 
@@ -6156,8 +6179,8 @@
     "m_ObjectId": "bdb1ded065004cee89e778ab237a8c8a",
     "m_Title": "Mix Fog",
     "m_Position": {
-        "x": 2201.000244140625,
-        "y": -312.99993896484377
+        "x": 2201.0,
+        "y": -313.0001220703125
     }
 }
 
@@ -6183,21 +6206,6 @@
         "z": 0.0,
         "w": 0.0
     },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "bdeeedb201e146dd9fb905dadb7e40f7",
-    "m_Id": 1,
-    "m_DisplayName": "Out_Vector1",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "OutVector1",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
     "m_Labels": []
 }
 
@@ -6794,8 +6802,8 @@
     "m_ObjectId": "d92c568894034e8dbcdb8bf5adc7ae97",
     "m_Title": "Ambient",
     "m_Position": {
-        "x": 973.0001220703125,
-        "y": -272.0
+        "x": 973.0,
+        "y": -272.0001220703125
     }
 }
 
