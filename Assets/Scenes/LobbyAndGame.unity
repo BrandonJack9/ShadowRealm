@@ -4434,7 +4434,7 @@ MonoBehaviour:
   ghostSpawnPoints:
   - {fileID: 1723515929}
   ghostPrefabs:
-  - {fileID: 6757987743279635966, guid: 9efd9f1ea70336b42a83a226a0ba2efb, type: 3}
+  - {fileID: 7143836704859704093, guid: e36c05a349925014590463908bb5c0a2, type: 3}
 --- !u!1 &1674754862
 GameObject:
   m_ObjectHideFlags: 0
@@ -4814,7 +4814,7 @@ Transform:
   m_GameObject: {fileID: 1723515925}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.65, z: -31.47}
+  m_LocalPosition: {x: 0, y: 0, z: -14.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

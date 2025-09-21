@@ -1,33 +1,35 @@
-﻿using Unity.Netcode;
+﻿using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
 
-/// <summary>
-/// Networked Ghost AI with patrol, chase, attack, KO (physics fall), pickup & lab conversion.
-/// Collider stays active as trigger while carried so lab can detect it.
-/// Requires: NetworkObject, NavMeshAgent, Rigidbody, Collider.
-/// </summary>
+
 public class GhostAI : NetworkBehaviour
 {
-    public enum State { Idle, Patrolling, Chasing, Attacking, Unconscious, Carried }
+    public enum State { Idle, Wandering, Chasing, Attacking, Unconscious, Carried }
 
+    [Header("Flying Properties")] 
+    [SerializeField] private float flyingHeight;
+    [SerializeField] private float minHeight;
+    [SerializeField] private float maxHeight;
+    [SerializeField] private float ascentSpeed = 3.5f;
+    [SerializeField] private float descentSpeed = 3.5f;
+    private bool isDescending;
+    private bool isAscending;
+    
     [Header("Tier & Health")]
     [SerializeField] private int tier = 1; // plasma reward
     [SerializeField] private float maxHealth = 100f;
     [SerializeField, Range(0f, 1f)] private float unconsciousThreshold = 0.25f;
-    [Header("Debug")]
-    [SerializeField] public float currentHealth; // visible in Inspector
-
+    [SerializeField] public float currentHealth; 
+    
     [Header("Perception & Combat")]
     [SerializeField] private float detectionRange = 12f;
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private float attackDamage = 10f;
-
-    [Header("Patrol")]
-    [SerializeField] private float waypointTolerance = 1f;
-
+    
     [Header("Wander Fallback (if no patrol route injected)")]
     [SerializeField] private bool enableWanderFallback = true;
     [SerializeField] private float wanderRadius = 10f;
@@ -37,9 +39,9 @@ public class GhostAI : NetworkBehaviour
     [SerializeField] private float pickupRange = 2f;
     [SerializeField] private Vector3 carryLocalOffset = new(0f, 1f, 1f);
 
-    [Header("NavMesh Safety")]
+    [Header("NavMesh")]
     [SerializeField] private float snapToNavmeshMaxDistance = 5f;
-
+    
     private NavMeshAgent agent;
     private Animator animator;
     private Collider hitCollider;
@@ -93,7 +95,9 @@ public class GhostAI : NetworkBehaviour
             return;
         }
 
-        BeginPatrolOrWander();
+        agent.baseOffset = flyingHeight;
+
+        BeginWander();
     }
 
     private void CaseHandling()
@@ -103,7 +107,7 @@ public class GhostAI : NetworkBehaviour
         {
             switch (currentState)
             {
-                case State.Patrolling: DoPatrol(); break;
+                case State.Wandering: DoWander(); break;
                 case State.Chasing: DoChase(); break;
                 case State.Attacking: DoAttack(); break;
                 case State.Unconscious:
@@ -114,7 +118,7 @@ public class GhostAI : NetworkBehaviour
                     if (enableWanderFallback && agent.enabled && agent.isOnNavMesh && Time.time >= nextWanderTime)
                     {
                         SetWanderDestination();
-                        currentState = State.Patrolling;
+                        currentState = State.Wandering;
                     }
                     break;
             }
@@ -136,7 +140,7 @@ public class GhostAI : NetworkBehaviour
         if (animator != null)
         {
             bool moving = IsServer && agent.enabled && !agent.isStopped && agent.velocity.sqrMagnitude > 0.05f;
-            animator.SetBool("Moving", moving && (currentState == State.Chasing || currentState == State.Patrolling));
+            animator.SetBool("Moving", moving && (currentState == State.Chasing || currentState == State.Wandering));
             animator.SetBool("Unconscious", currentState == State.Unconscious || currentState == State.Carried);
         }
     }
@@ -159,7 +163,7 @@ public class GhostAI : NetworkBehaviour
     //     if (points != null) patrolPoints.AddRange(points);
     // }
 
-    private void BeginPatrolOrWander()
+    private void BeginWander()
     {
         if (!agent.enabled || !agent.isOnNavMesh) return;
 
@@ -173,7 +177,7 @@ public class GhostAI : NetworkBehaviour
         else if (enableWanderFallback)
         {
             SetWanderDestination();
-            currentState = State.Patrolling;
+            currentState = State.Wandering;
         }
         else
         {
@@ -182,10 +186,10 @@ public class GhostAI : NetworkBehaviour
         }
     }
 
-    private void DoPatrol()
+    private void DoWander()
     {
         if (!agent.enabled || !agent.isOnNavMesh) { TryRecoverToNavmesh(); return; }
-
+            
         // if (patrolPoints.Count > 0)
         // {
         //     if (!agent.pathPending && agent.remainingDistance <= waypointTolerance)
@@ -194,10 +198,15 @@ public class GhostAI : NetworkBehaviour
         //         agent.SetDestination(patrolPoints[patrolIndex]);
         //     }
         // }
-        else if (enableWanderFallback)
+        if (enableWanderFallback)
         {
-            if (!agent.pathPending && agent.remainingDistance <= waypointTolerance || Time.time >= nextWanderTime)
+            ResettingAndAscending();
+            
+            if (Time.time >= nextWanderTime)
+            {
                 SetWanderDestination();
+            }
+                
         }
 
         LookForPlayer();
@@ -205,6 +214,7 @@ public class GhostAI : NetworkBehaviour
 
     private void DoChase()
     {
+        //
         if (targetPlayer == null || targetPlayer.IsKO)
         {
             targetPlayer = null;
@@ -224,9 +234,62 @@ public class GhostAI : NetworkBehaviour
 
         agent.isStopped = false;
         agent.SetDestination(targetPlayer.transform.position);
+       
+        if (dist <= attackRange + agent.baseOffset)
+        {
+            
+            TransitioningToDescending();
+            DescendingAttackingSetup();
+        }
+        
+            
+    }
 
-        if (dist <= attackRange)
-            currentState = State.Attacking;
+    private void TransitioningToDescending()
+    {
+        if (!isAscending)
+        {
+            isDescending = true;
+        }
+    }
+
+    private void FlyUp()
+    {
+        isAscending = true;
+        isDescending = false;
+    }
+    private void DescendingAttackingSetup()
+    {
+        if (isDescending)
+        {
+            if (agent.baseOffset > minHeight)
+            {
+                agent.baseOffset -= descentSpeed * Time.deltaTime;
+            }
+
+            if (agent.baseOffset <= minHeight)
+            {
+                currentState = State.Attacking;
+                isDescending = false;
+            }
+        }
+    }
+
+    private void ResettingAndAscending()
+    {
+        
+        if (isAscending)
+        {
+            if (agent.baseOffset < maxHeight)
+            {
+                agent.baseOffset += ascentSpeed * Time.deltaTime;
+            }
+
+            if (agent.baseOffset >= maxHeight)
+            {
+                isAscending = false;
+            }
+        }
     }
 
     private void DoAttack()
@@ -235,21 +298,27 @@ public class GhostAI : NetworkBehaviour
         {
             targetPlayer = null;
             ReturnToRoam();
-            return;
+            
         }
 
         float dist = Vector3.Distance(transform.position, targetPlayer.transform.position);
         if (dist > attackRange)
         {
             currentState = State.Chasing;
-            return;
+            
         }
 
-        if (Time.time - lastAttackTime >= attackCooldown)
+        if (dist <= attackRange)
         {
-            targetPlayer.TakeDamageServerRpc(attackDamage);
-            lastAttackTime = Time.time;
+            
+            if (Time.time - lastAttackTime >= attackCooldown)
+            {
+                targetPlayer.TakeDamageServerRpc(attackDamage);
+                lastAttackTime = Time.time;
+            }
         }
+
+        
     }
 
     private void ReturnToRoam()
@@ -295,7 +364,6 @@ public class GhostAI : NetworkBehaviour
     public void TakeDamageServerRpc(float dmg)
     {
         if (currentState == State.Unconscious || currentState == State.Carried) return;
-
         currentHealth = Mathf.Max(0, currentHealth - Mathf.Abs(dmg));
         if (currentHealth <= maxHealth * unconsciousThreshold)
             GoUnconsciousServer();

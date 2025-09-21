@@ -6,10 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="74bdd01c-f985-4a31-8cfb-05d3a768af79" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShadowRealm/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShadowRealm/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Ghost1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Ghost1.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Ghost1.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Ghost1.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LobbyAndGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LobbyAndGame.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LobbyAndGame/NavMesh-Plane 1.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LobbyAndGame/NavMesh-Plane 1.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LobbyAndGame/NavMesh-Plane 1.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LobbyAndGame/NavMesh-Plane 1.asset.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GhostAI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GhostAI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GhostManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GhostManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/NavMeshAreas.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/NavMeshAreas.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +25,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GhostAI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://U:/Unity/ShadowRealm/Assets/Scripts/GhostAI.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GhostManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
