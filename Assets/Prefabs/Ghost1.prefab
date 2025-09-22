@@ -46,7 +46,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7143836704859704093}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4711208715938537054, guid: 4a728443de9e4194eb36f2b319d09ba0, type: 3}
 --- !u!23 &5715814335283979035
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -70,9 +70,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8932371784621110206, guid: 205d71af64814f44aa12a503b78c8d38, type: 3}
-  - {fileID: 1565108625488568294, guid: 205d71af64814f44aa12a503b78c8d38, type: 3}
-  - {fileID: -2230801840150323051, guid: 205d71af64814f44aa12a503b78c8d38, type: 3}
+  - {fileID: -3543845665483381870, guid: 4a728443de9e4194eb36f2b319d09ba0, type: 3}
+  - {fileID: 2149463721793755008, guid: 4a728443de9e4194eb36f2b319d09ba0, type: 3}
+  - {fileID: -8166578278092043408, guid: 4a728443de9e4194eb36f2b319d09ba0, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -136,7 +136,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.51, z: 0}
 --- !u!114 &7903709508580871289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   unconsciousThreshold: 0.25
   currentHealth: 0
   detectionRange: 12
-  attackRange: 10
+  attackRange: 5
   attackCooldown: 2
   attackDamage: 10
   enableWanderFallback: 1
