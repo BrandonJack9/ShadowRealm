@@ -19,11 +19,18 @@ public class UIManager : MonoBehaviour
     [Header("Buttons")]
     public Button NextRoundButton;
     public Button ReturnToLobbyButton;
+    public Button RestartButton; // present
 
     [Header("Revive UI")]
     [SerializeField] private GameObject revivePrompt;
     [SerializeField] private TMP_Text reviveText;
     [SerializeField] private Slider reviveSlider;
+
+    [Header("Health UI (Filled Image)")]
+    [Tooltip("The foreground fill Image using your 2D sprite. Image.type should be Filled, Horizontal.")]
+    [SerializeField] private Image playerHealthFill;
+    [Tooltip("Optional number text like '85/100'. Leave null to skip.")]
+    [SerializeField] private TMP_Text playerHealthText;
 
     private void Awake()
     {
@@ -33,6 +40,10 @@ public class UIManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        // IMPORTANT: Do NOT force-hide here; leave your scene's initial active state as-is.
+        // The owner will explicitly show & initialize from PlayerHealth when ready.
+        // (If you want it hidden in editor, set it inactive on the Image in the prefab.)
     }
 
     // ---------------- HUD ----------------
@@ -59,12 +70,18 @@ public class UIManager : MonoBehaviour
     {
         if (defeatPanel != null)
             defeatPanel.SetActive(true);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void ShowEndOfRoundPanel()
     {
         if (endOfRoundPanel != null)
             endOfRoundPanel.SetActive(true);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void HideAllPanels()
@@ -107,6 +124,76 @@ public class UIManager : MonoBehaviour
             revivePrompt.SetActive(false);
     }
 
+    // ---------------- Health (Filled Image) ----------------
+    public void SetHealthBarVisible(bool visible, bool prefillFull = false)
+    {
+        if (playerHealthFill != null)
+        {
+            if (visible)
+            {
+                ActivateParents(playerHealthFill.gameObject);
+
+                if (playerHealthFill.type != Image.Type.Filled)
+                    playerHealthFill.type = Image.Type.Filled;
+                if (playerHealthFill.fillMethod != Image.FillMethod.Horizontal)
+                    playerHealthFill.fillMethod = Image.FillMethod.Horizontal;
+
+                if (prefillFull)
+                {
+                    playerHealthFill.fillAmount = 1f;   // show full immediately
+                    playerHealthFill.SetVerticesDirty(); // force redraw this frame
+                }
+            }
+
+            playerHealthFill.gameObject.SetActive(visible);
+        }
+
+        if (playerHealthText != null)
+        {
+            if (visible)
+                ActivateParents(playerHealthText.gameObject);
+
+            playerHealthText.gameObject.SetActive(visible);
+        }
+    }
+
+    public void UpdateHealthBar(float current, float max)
+    {
+        if (playerHealthFill != null)
+        {
+            if (playerHealthFill.type != Image.Type.Filled)
+                playerHealthFill.type = Image.Type.Filled;
+            if (playerHealthFill.fillMethod != Image.FillMethod.Horizontal)
+                playerHealthFill.fillMethod = Image.FillMethod.Horizontal;
+
+            if (!playerHealthFill.gameObject.activeInHierarchy)
+                SetHealthBarVisible(true); // ensure visible
+
+            playerHealthFill.fillAmount = (max > 0f) ? Mathf.Clamp01(current / max) : 0f;
+            playerHealthFill.SetVerticesDirty(); // ensure the change is rendered now
+        }
+
+        if (playerHealthText != null)
+        {
+            if (!playerHealthText.gameObject.activeInHierarchy)
+                SetHealthBarVisible(true);
+
+            playerHealthText.text = $"{Mathf.CeilToInt(current)}/{Mathf.CeilToInt(max)}";
+        }
+    }
+
+    private void ActivateParents(GameObject leaf)
+    {
+        var t = leaf.transform;
+        while (t != null)
+        {
+            var go = t.gameObject;
+            if (!go.activeSelf)
+                go.SetActive(true);
+            t = t.parent;
+        }
+    }
+
     // ---------------- Button Handlers ----------------
     public void OnClick_NextRound()
     {
@@ -120,5 +207,12 @@ public class UIManager : MonoBehaviour
         Debug.Log("[UIManager] Return to Lobby button clicked (local)");
         if (GameManager.Instance != null)
             GameManager.Instance.HostReturnToLobbyServerRpc();
+    }
+
+    public void OnClick_RestartGame()
+    {
+        Debug.Log("[UIManager] Restart button clicked (local)");
+        if (GameManager.Instance != null)
+            GameManager.Instance.HostRestartGameServerRpc();
     }
 }

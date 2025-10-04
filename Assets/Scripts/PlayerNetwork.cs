@@ -268,7 +268,7 @@ public class PlayerNetwork : NetworkBehaviour
         currentPlasmaBall = netObj;
     }
 
-    // ---------------- Revive ----------------
+    // ---------------- Revive (unchanged) ----------------
     private void HandleReviveInput()
     {
         currentReviveTarget = FindNearbyKOTeammate();
@@ -346,5 +346,32 @@ public class PlayerNetwork : NetworkBehaviour
         if (dist > reviveRange + 0.75f) return;
 
         targetPH.ServerReviveImmediate();
+    }
+
+    // ---------------- Teleport / Reset (NEW) ----------------
+    [ServerRpc(RequireOwnership = false)]
+    public void ResetTransformServerRpc(Vector3 position, Quaternion rotation, ServerRpcParams rpc = default)
+    {
+        // Snap on server
+        if (controller != null) controller.enabled = false;
+        transform.SetPositionAndRotation(position, rotation);
+        velocity = Vector3.zero;
+        if (controller != null) controller.enabled = true;
+
+        // Also tell the owner to snap locally (important if transform is owner-auth)
+        var targetOwner = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams { TargetClientIds = new ulong[] { OwnerClientId } }
+        };
+        TeleportClientRpc(position, rotation, targetOwner);
+    }
+
+    [ClientRpc]
+    public void TeleportClientRpc(Vector3 position, Quaternion rotation, ClientRpcParams rpc = default)
+    {
+        if (controller != null) controller.enabled = false;
+        transform.SetPositionAndRotation(position, rotation);
+        velocity = Vector3.zero;
+        if (controller != null) controller.enabled = true;
     }
 }

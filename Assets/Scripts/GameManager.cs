@@ -10,13 +10,17 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance { get; private set; }
 
     public enum RoundState { Idle, Playing, RoundEnded, Defeat }
-
+    [Header("Managers")]
+    [SerializeField] private GhostManager ghostManager;
     [Header("Prefabs & Scene References")]
-    [SerializeField] private List<GameObject> ghostPrefabs = new();
-    [SerializeField] private List<Transform> ghostSpawnPoints = new();
-    [SerializeField] private List<PatrolRoute> patrolRoutes = new();
+    // [SerializeField] private List<GameObject> ghostPrefabs = new();
+    // [SerializeField] private List<Transform> ghostSpawnPoints = new();
+    //[SerializeField] private List<PatrolRoute> patrolRoutes = new();
     [SerializeField] private GameObject nextRoundConsolePrefab;
     [SerializeField] private Transform nextRoundConsoleSpawn;
+
+    [Header("Player Spawns")] // ✅ NEW
+    [SerializeField] private List<Transform> playerSpawnPoints = new();
 
     [Header("UI References")]
     [SerializeField] private GameObject lobbyCanvas;
@@ -25,8 +29,6 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private TMPro.TMP_Text hudJoinCodeText; // Lives on HUD
 
     [Header("Round Scaling")]
-    [SerializeField] private int baseGhosts = 6;
-    [SerializeField] private int ghostsPerRound = 3;
     [SerializeField] private float baseTimeSeconds = 120f;
     [SerializeField] private float timePerRound = 30f;
     [SerializeField] private int basePlasmaThreshold = 10;
@@ -37,8 +39,8 @@ public class GameManager : NetworkBehaviour
     public NetworkVariable<int> PlasmaThreshold = new(0);
     public NetworkVariable<float> TimeRemaining = new(0);
     public NetworkVariable<RoundState> State = new(RoundState.Idle);
-
-    private readonly List<NetworkObject> spawnedGhosts = new();
+    
+    //private readonly List<NetworkObject> spawnedGhosts = new();
     private NetworkObject nextRoundConsole;
     private HashSet<ulong> knockedOutClients = new();
     private Coroutine timerRoutine;
@@ -47,10 +49,12 @@ public class GameManager : NetworkBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        //ghostManager.SetRoundValue(Round.Value);
     }
 
     public override void OnNetworkSpawn()
     {
+
         // SERVER: initialize round and start
         if (IsServer)
         {
@@ -58,22 +62,18 @@ public class GameManager : NetworkBehaviour
             StartRoundServer();
         }
 
-        // CLIENT (and host runs this too): keep local UI/HUD in sync with NVs
+        // CLIENT: keep local UI/HUD in sync with NVs
         if (IsClient)
         {
-            // Immediately apply UI for current state (handles late joiners)
             ApplyLocalUIFromState(State.Value);
 
-            // Wire up reactive HUD updates (keeps text fresh even if an RPC is missed)
             PlasmaThisRound.OnValueChanged += (_, __) => SafeRefreshHUD();
             PlasmaThreshold.OnValueChanged += (_, __) => SafeRefreshHUD();
             Round.OnValueChanged += (_, __) => SafeRefreshHUD();
             TimeRemaining.OnValueChanged += (_, __) => SafeRefreshHUD();
 
-            // React to state transitions locally (extra safety net)
             State.OnValueChanged += (_, newState) => ApplyLocalUIFromState(newState);
 
-            // Initial HUD paint
             SafeRefreshHUD();
         }
     }
@@ -93,16 +93,16 @@ public class GameManager : NetworkBehaviour
         PlasmaThisRound.Value = 0;
         State.Value = RoundState.Playing;
 
-        // UI flip must be done on each client, not just locally
+        // Flip all clients to gameplay UI
         var code = joinCodeText != null ? joinCodeText.text : string.Empty;
         EnterGameplayUIClientRpc(code);
 
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
-
-        int ghostCount = baseGhosts + ghostsPerRound * (Round.Value - 1);
-        SpawnGhostsServer(ghostCount);
-
+        
+        // ✅ NEW: place all players at spawn points at round start
+        PositionPlayersAtSpawnsServer(alsoHeal: false);
+        ghostManager.StartRoundServer(Round.Value);
         if (timerRoutine != null) StopCoroutine(timerRoutine);
         timerRoutine = StartCoroutine(RoundTimerRoutine());
 
@@ -117,7 +117,7 @@ public class GameManager : NetworkBehaviour
 
         if (timerRoutine != null) { StopCoroutine(timerRoutine); timerRoutine = null; }
 
-        DespawnAllGhostsServer();
+        ghostManager.DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
         if (victory) ShowEndOfRoundPanelClientRpc();
@@ -130,7 +130,7 @@ public class GameManager : NetworkBehaviour
 
         if (timerRoutine != null) { StopCoroutine(timerRoutine); timerRoutine = null; }
 
-        DespawnAllGhostsServer();
+        ghostManager.DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
         ShowDefeatPanelClientRpc();
@@ -138,7 +138,7 @@ public class GameManager : NetworkBehaviour
 
     private void CleanupRoundServer()
     {
-        DespawnAllGhostsServer();
+        ghostManager.DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
         knockedOutClients.Clear();
     }
@@ -162,42 +162,7 @@ public class GameManager : NetworkBehaviour
             EndRoundServer(victory: true);
     }
 
-    private void SpawnGhostsServer(int count)
-    {
-        if (ghostPrefabs.Count == 0 || ghostSpawnPoints.Count == 0) return;
-
-        for (int i = 0; i < count; i++)
-        {
-            var prefab = ghostPrefabs[Random.Range(0, ghostPrefabs.Count)];
-            var spawn = ghostSpawnPoints[Random.Range(0, ghostSpawnPoints.Count)];
-
-            var go = Instantiate(prefab, spawn.position, spawn.rotation);
-            var ghostAI = go.GetComponent<GhostAI>();
-
-            if (patrolRoutes.Count > 0 && ghostAI != null)
-            {
-                PatrolRoute route = patrolRoutes[Random.Range(0, patrolRoutes.Count)];
-                ghostAI.SetPatrolPath(route.Points);
-            }
-
-            var netObj = go.GetComponent<NetworkObject>();
-            if (netObj == null) { Destroy(go); continue; }
-
-            netObj.Spawn(true);
-            spawnedGhosts.Add(netObj);
-        }
-    }
-
-    private void DespawnAllGhostsServer()
-    {
-        for (int i = spawnedGhosts.Count - 1; i >= 0; i--)
-        {
-            var netObj = spawnedGhosts[i];
-            if (netObj != null && netObj.IsSpawned)
-                netObj.Despawn(true);
-        }
-        spawnedGhosts.Clear();
-    }
+    
 
     // -------------------- SCORE / EVENTS (SERVER) --------------------
 
@@ -287,11 +252,37 @@ public class GameManager : NetworkBehaviour
         PlasmaThisRound.Value = 0;
         State.Value = RoundState.Idle;
 
-        DespawnAllGhostsServer();
+        ghostManager.DespawnAllGhostsServer();
         DespawnNextRoundConsoleIfAny();
 
         // Flip UI on all clients
         ReturnToLobbyUIClientRpc();
+
+        HideAllPanelsClientRpc();
+        RefreshHUDClientRpc();
+    }
+
+    // ✅ NEW: restart from defeat → heal, move to spawns, start at Round 1
+    [ServerRpc(RequireOwnership = false)]
+    public void HostRestartGameServerRpc()
+    {
+        if (!IsServer) return;
+
+        Debug.Log("[GameManager] Restarting game...");
+
+        Round.Value = 1;
+        PlasmaThisRound.Value = 0;
+        ApplyRoundScaling();
+
+        ghostManager.DespawnAllGhostsServer();
+        DespawnNextRoundConsoleIfAny();
+        knockedOutClients.Clear();
+
+        // Place + fully heal everyone
+        PositionPlayersAtSpawnsServer(alsoHeal: true);
+
+        // Fresh round
+        StartRoundServer();
 
         HideAllPanelsClientRpc();
         RefreshHUDClientRpc();
@@ -327,25 +318,23 @@ public class GameManager : NetworkBehaviour
     [ClientRpc] private void HideAllPanelsClientRpc() => UIManager.Instance?.HideAllPanels();
 
     [ClientRpc]
-    private void RefreshHUDClientRpc()
-    {
-        SafeRefreshHUD();
-    }
+    private void RefreshHUDClientRpc() { SafeRefreshHUD(); }
 
     // -------------------- LOCAL UI HELPERS (CLIENT) --------------------
 
     private void ApplyLocalUIFromState(RoundState state)
     {
-        // This runs on each client; keeps canvases correct even if they missed an RPC.
+        // ✅ FIX: keep HUD active on Defeat so the Defeat panel can show
         switch (state)
         {
             case RoundState.Playing:
             case RoundState.RoundEnded:
+            case RoundState.Defeat: // <- was showing Lobby before (bug)
                 if (lobbyCanvas != null) lobbyCanvas.SetActive(false);
                 if (hudCanvas != null) hudCanvas.SetActive(true);
                 break;
+
             case RoundState.Idle:
-            case RoundState.Defeat:
             default:
                 if (lobbyCanvas != null) lobbyCanvas.SetActive(true);
                 if (hudCanvas != null) hudCanvas.SetActive(false);
@@ -361,5 +350,43 @@ public class GameManager : NetworkBehaviour
             Round.Value,
             TimeRemaining.Value
         );
+    }
+
+    // -------------------- PLAYER SPAWN HELPERS (SERVER) --------------------
+    // ✅ NEW: deterministic assignment (sorted ClientIds) + owner-side teleport
+    private void PositionPlayersAtSpawnsServer(bool alsoHeal)
+    {
+        if (!IsServer) return;
+
+        // Build stable order
+        var ids = new List<ulong>(NetworkManager.Singleton.ConnectedClientsIds);
+        ids.Sort();
+
+        for (int i = 0; i < ids.Count; i++)
+        {
+            var id = ids[i];
+            if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(id, out var client)) continue;
+            var playerObj = client.PlayerObject;
+            if (playerObj == null) continue;
+
+            var playerNet = playerObj.GetComponent<PlayerNetwork>();
+            if (playerNet == null) continue;
+
+            Transform sp = (playerSpawnPoints != null && playerSpawnPoints.Count > 0)
+                ? playerSpawnPoints[i % playerSpawnPoints.Count]
+                : null;
+
+            Vector3 pos = sp != null ? sp.position : Vector3.zero;
+            Quaternion rot = sp != null ? sp.rotation : Quaternion.identity;
+
+            // Set on server AND tell the owner to snap locally (works even w/o NetworkTransform)
+            playerNet.ResetTransformServerRpc(pos, rot);
+
+            if (alsoHeal)
+            {
+                var ph = playerObj.GetComponent<PlayerHealth>();
+                if (ph != null) ph.ServerFullHeal();
+            }
+        }
     }
 }
