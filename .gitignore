@@ -73,3 +73,202 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Trees/TFF_Pine_Tree_03A.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_WildGrass_M_01.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Small_Rock_B.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Trees/TFF_Pine_Tree_04A.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Small_Rock_A.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Small_Rock_E.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Plants/TFF_Bush_01B.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Plants/TFF_Bush_02A.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Trees/TFF_Pine_Tree_01A.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Small_Rock_D.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Plants/TFF_Bush_03A.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Plants/TFF_Bush_03B.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_WildGrass_S_03.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_WildGrass_S_01.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Trees/TFF_Tree_Trunk_04A.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Plants/TFF_Bush_01A.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Trees/TFF_Pine_Tree_05A.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Trees/TFF_Tree_Trunk_01A.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Trees/TFF_Tree_Trunk_02A.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Plants/TFF_Bush_03C.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Rocks/TFF_Rock_Small_02A.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_WildGrass_M_02.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Rocks/TFF_Rock_Small_01A.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Vegetation/Trees/TFF_Pine_Tree_02B.prefab
+!Assets/Toon Fantasy Nature/Prefabs/Rocks/TFF_Rock_Small_04A.prefab
+!Assets/Scripts/ProceduralTerrain.cs
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Rock_Kit/Small/SM_Small_Rock_B.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Rock_Kit/Small/SM_Small_Rock_D.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_WildGrass_01_N.PNG
+!Assets/Toon Fantasy Nature/Shaders/TFF_CustomToonVegetation.shader
+!Assets/Toon Fantasy Nature/Shaders/TFF_CustomToonOutline.shader
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_WildGrass_01_D.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Rock_Kit/Small/SM_Small_Rock_A.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Rock_Kit/Small/SM_Small_Rock_E.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Tree_Trunk_01A.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Bush_03C.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Bush_03A.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Pine_Tree_02B.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Pine_Tree_05A.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/M_RockMossy_02.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/WildGrass/Meshes/SM_WildGrass_M_02.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Pine_Tree_01A.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/WildGrass/Meshes/SM_WildGrass_S_01.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Bush_02A.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/WildGrass/Meshes/SM_WildGrass_M_01.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Pine_Tree_04A.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Tree_Trunk_02A.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Bush_01B.fbx
+!Assets/Toon Fantasy Nature/Terrain/Layer_TFF_Terrain_Dirt_Road_1A_D.terrainlayer
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_road_Normal.PNG
+!Assets/Toon Fantasy Nature/Models/TFF_Bush_01A.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Rock_Small_02A.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Rock_Small_01A.fbx
+!Assets/Toon Fantasy Nature/Terrain/Layer_TFF_Terrain_Grass_1A_D.terrainlayer
+!Assets/Toon Fantasy Nature/Terrain/Layer_TFF_Terrain_Dirt_1A_D.terrainlayer
+!Assets/Toon Fantasy Nature/Terrain/Layer_TFF_Terrain_Earth_2A_D.terrainlayer
+!Assets/Toon Fantasy Nature/Terrain/Layer_TFF_Terrain_Sand_1A_D.terrainlayer
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Terrain/Road.terrainlayer
+!Assets/Toon Fantasy Nature/Textures/TFF_Grass_Patch_02C.tif
+!Assets/Toon Fantasy Nature/Textures/TFF_Grass_Patch_01A.tif
+!Assets/Toon Fantasy Nature/Textures/TFF_Noise_1.psd
+!Assets/Toon Fantasy Nature/Models/TFF_Pine_Tree_03A.fbx
+!Assets/Toon Fantasy Nature/Textures/TFF_Atlas_1A_D.png
+!Assets/Toon Fantasy Nature/Textures/TFF_Toon_Ramp_1B.psd
+!Assets/Toon Fantasy Nature/Textures/TFF_Atlas_Vegetation_1A_D.tga
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Shaders/S_BasicTextured.shadergraph
+!Assets/Toon Fantasy Nature/Models/TFF_Bush_03B.fbx
+!Assets/Toon Fantasy Nature/Models/Materials/TFF_Atlas_Vegetation_1A_D.mat
+!Assets/Toon Fantasy Nature/Terrain/TFF_Terrain_Sand_1A_D.tif
+!Assets/Toon Fantasy Nature/Terrain/TFF_Terrain_Dirt_Road_1A_D.tif
+!Assets/New Terrain.asset
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/WildGrass/Meshes/SM_WildGrass_S_03.fbx
+!Assets/Toon Fantasy Nature/Models/TFF_Tree_Trunk_04A.fbx
+!Assets/Toon Fantasy Nature/Terrain/TFF_Terrain_Grass_1A_D.tif
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Rock_New_basecolor.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Rock_New_normal.PNG
+!Assets/Toon Fantasy Nature/Terrain/TFF_Terrain_Dirt_1A_D.tif
+!Assets/Toon Fantasy Nature/Terrain/TFF_Terrain_Earth_2A_D.tif
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Rock_New_ORMH.PNG
+!Assets/Toon Fantasy Nature/Models/Materials/TFF_Atlas_1A_D.mat
+!Assets/Toon Fantasy Nature/Models/TFF_Rock_Small_04A.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/WildGrass/Materials/M_WildGrass_Atlas_01.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_road_BaseColor.PNG
+!Assets/Toon Fantasy Nature/Shaders/TFF_ToonWater.shader
+!Assets/Toon Fantasy Nature/Models/Materials/TFF_Water_01A.mat
+!Assets/Toon Fantasy Nature/Textures/TFF_Water_Normal_1.png
+!Assets/Toon Fantasy Nature/Textures/TFF_Noise_2.tga
+!Assets/Arena blockout (1).fbx
+!Assets/CastleMats/Wooden Planks.mat
+!Assets/CastleMats/castle_wall_varriation.mat
+!Assets/Models/Base.blend
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_RockCliff_01.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Rock_Kit/SM_RockCliff_01.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_RockCliff_04.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Rock_Kit/SM_RockCliff_04.fbx
+!Assets/Scenes/CastleEnvironment/PostProcessing Profile.asset
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Bridge_Small_01.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/DockWalls/Bridges/SM_Bridge_Small_01.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Ground_Moss_N.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_MacroVariation_M.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_DockFloor_normal.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBrickWall_normal.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBrickWall_ORMH.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Slab_OcclusionRoughnessMetallic.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Slab_Normal.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_stoneSurface_ORMH.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Shaders/S_BlendVertex.shadergraph
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_DockFloor_ORMH.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Slab_BaseColor.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Rock_Slate_N.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/M_StoneWall_Algae1.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/M_CobblePath_01.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_DockFloor_basecolor.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBrickWall_basecolor.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/M_Stab_Algae.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_ground_Moss_D.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Front_Arch.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Castle_Kit/Buildings/Castle_Gate/SM_Front_Arch.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/M_StoneFence_03.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/BrickKit/M_BrickKit_07.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Shaders/S_BrickKit.shadergraph
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneWall_A_basecolor.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneFence_Base_normal.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricksLP_N_4.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricksLP_OCG_3.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneWall_A_normal.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneWall_A_ARM.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_stoneSurface_basecolor.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/M_BrickStoneWall_Disp.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Torch_A.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/M_Wood_A.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/M_BasicTextured.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Props/SM_Torch_A.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_IndividualTile_basecolor.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_IndividualTile_normal.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_MetalTiling_01_OcclusionRoughnessMetallic.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/VFX/Prefabs/PS_FireParticle.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/VFX/Prefabs/PS_SmokeParticle.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/VFX/Materials/M_FireSheet_01.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Bark_01_ORM.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Bark_01_basecolor.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/VFX/Materials/M_Smoke.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Bark_01_normal.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/M_Metal.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_MetalTiling_01_BaseColor.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_MetalTiling_01_Normal.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/VFX/Textures/T_Fire_RA_01.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_IndividualTile_ORMH.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_EuropeanBeech_L_02.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_EuropeanBeech_01_D.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_EuropeanBeech_Detail_01_N.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/EuropeanBeech/Materials/M_EuropeanBeech_Atlas_01.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/EuropeanBeech/Materials/M_EuropeanBeech_Detail_01.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_EuropeanBeech_Bark_01_N.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/EuropeanBeech/Meshes/SM_EuropeanBeech_L_02.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_EuropeanBeech_Bark_01_M.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_EuropeanBeech_01_N.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_EuropeanBeech_Detail_01_A.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/EuropeanBeech/Materials/M_EuropeanBeech_Bark_01.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_EuropeanBeech_Bark_01_A.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_EuropeanBeech_L_01.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/EuropeanBeech/Meshes/SM_EuropeanBeech_L_01.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_EuropeanBeech_L_03.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/EuropeanBeech/Meshes/SM_EuropeanBeech_L_03.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_EuropeanBeech_XL_02.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Scanned_Foliage/Foliage/EuropeanBeech/Meshes/SM_EuropeanBeech_XL_02.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Bridge_Middle_01.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/DockWalls/Bridges/SM_Bridge_Middle_01.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_CastleTower_Window_A_15.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/BrickKit/M_BrickKit_06.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Castle_Kit/Buildings/A/Windows/SM_CastleTower_Window_A_15.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/BrickKit/M_BrickKit_04.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricksLP_OCG.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/BrickKit/M_BrickKit_05.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricks_04_OCG.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricks_03_N.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricksLP_N.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricks_03_OCG.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricksLP_N_2.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricksLP_OCG_1.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricks_04_N.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/BrickKit/M_BrickKit_03.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_CastleTower_Wall_A_03.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Castle_Kit/Buildings/A/SM_CastleTower_Wall_A_03.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Front_Top_1.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Castle_Kit/Buildings/Castle_Gate/SM_Front_Top.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/BrickKit/M_BrickKit_02.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricks_02_N.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_StoneBricks_02_OCG.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Portcullis.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Castle_Kit/Buildings/Castle_Gate/SM_Portcullis.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Wood_02_ORMH.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Wood_02_normal.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Textures(1K)/T_Wood_02_basecolor.PNG
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Materials/M_WoodPlanks.mat
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Portcullis_Frame.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Castle_Kit/Buildings/Castle_Gate/SM_Portcullis_Frame.fbx
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Prefabs/SM_Wall_1x5.prefab
+!Assets/HIVEMIND/MedievalKingdom/URP/Art/Meshes/Castle_Kit/Buildings/Hall_1/SM_Wall_1x5.fbx
