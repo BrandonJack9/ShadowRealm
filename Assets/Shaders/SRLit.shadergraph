@@ -32,6 +32,9 @@
         },
         {
             "m_Id": "8e47441cad11481f82ff1ba929f491cd"
+        },
+        {
+            "m_Id": "7898b77e6ae14e5a84dbd41c24013e08"
         }
     ],
     "m_Keywords": [
@@ -108,6 +111,9 @@
         },
         {
             "m_Id": "0986be27d2134f9e932a8841ce00a5e8"
+        },
+        {
+            "m_Id": "09fd3b54f2de459cb5ad7ee57e0c7f84"
         }
     ],
     "m_GroupDatas": [],
@@ -125,6 +131,20 @@
                     "m_Id": "7a2dd74e3c8b426789e4947eea32f3e6"
                 },
                 "m_SlotId": -1158894882
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "09fd3b54f2de459cb5ad7ee57e0c7f84"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "7a2dd74e3c8b426789e4947eea32f3e6"
+                },
+                "m_SlotId": -2136844874
             }
         },
         {
@@ -458,6 +478,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "09fd3b54f2de459cb5ad7ee57e0c7f84",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 6359.0,
+            "y": 2731.0,
+            "width": 126.0,
+            "height": 77.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "d56528fe930d427fb791e234212fa999"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "7898b77e6ae14e5a84dbd41c24013e08"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.ColorRGBMaterialSlot",
     "m_ObjectId": "0b855e833a944ec8abd4ae862145ba66",
     "m_Id": 0,
@@ -701,6 +757,9 @@
         },
         {
             "m_Id": "43d4fa5ba73a4105adff06bcaf3d6273"
+        },
+        {
+            "m_Id": "7898b77e6ae14e5a84dbd41c24013e08"
         },
         {
             "m_Id": "8c4400ff1e87420d9f72d7f7c7710299"
@@ -1111,6 +1170,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "7898b77e6ae14e5a84dbd41c24013e08",
+    "m_Guid": {
+        "m_GuidSerialized": "be246a77-885c-4e2c-8518-abfba28026ed"
+    },
+    "m_Name": "Global Fog Height",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Global Fog Height",
+    "m_DefaultReferenceName": "_Global_Fog_Height",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": false,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": true,
+    "hlslDeclarationOverride": 1,
+    "m_Hidden": false,
+    "m_Value": 10.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Texture2DInputMaterialSlot",
     "m_ObjectId": "790594778b224f59a5368cf521f0ff4e",
@@ -1202,6 +1289,9 @@
             "m_Id": "8ef2234573b7411a84dfd0aec2abb64f"
         },
         {
+            "m_Id": "a31db2c0686c4b03868451c058d08502"
+        },
+        {
             "m_Id": "f6032416a7654bf4bf9a5dbff00c3e6e"
         },
         {
@@ -1227,7 +1317,8 @@
         "fa53bae3-2f3e-4798-858d-7b1c071b1c63",
         "b108db17-f535-489d-8b4b-86a0c9843d9f",
         "412b11fa-e39c-4720-87d6-55035e7dce0a",
-        "d57eee78-4928-4585-bc60-fd91326deabb"
+        "d57eee78-4928-4585-bc60-fd91326deabb",
+        "6fb32b0d-a441-40cd-bca2-67954678bb3a"
     ],
     "m_PropertyIds": [
         -960261200,
@@ -1239,7 +1330,8 @@
         -1028914337,
         -970006176,
         261118399,
-        -1158894882
+        -1158894882,
+        -2136844874
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -1619,6 +1711,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "a31db2c0686c4b03868451c058d08502",
+    "m_Id": -2136844874,
+    "m_DisplayName": "Global Fog Height",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_Global_Fog_Height",
+    "m_StageCapability": 2,
+    "m_Value": 10.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.BooleanMaterialSlot",
     "m_ObjectId": "ae4dd05f3a4a4d9494178e3676693152",
     "m_Id": -348253170,
@@ -1903,6 +2010,21 @@
     "useTilingAndOffset": true,
     "m_Modifiable": true,
     "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "d56528fe930d427fb791e234212fa999",
+    "m_Id": 0,
+    "m_DisplayName": "Global Fog Height",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
